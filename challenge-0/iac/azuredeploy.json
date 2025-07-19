@@ -21,7 +21,7 @@
     },
     "aiFoundryName": {
       "type": "string",
-      "defaultValue": "aifoundry",
+      "defaultValue":  "[format('aifoundry-{0}', uniqueString(resourceGroup().id))]",
       "metadata": {
         "description": "Friendly name for your Azure AI Foundry hub resource"
       }
