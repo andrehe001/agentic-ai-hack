@@ -167,7 +167,7 @@
       "properties": {
         "allowProjectManagement": true,
         "customSubDomainName": "[variables('aiFoundryName')]",
-        "disableLocalAuth": true
+        "disableLocalAuth": false
       }
     },
     {
