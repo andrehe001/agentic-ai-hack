@@ -4,7 +4,7 @@
 @description('Azure location where resources should be deployed (e.g., swedencentral)')
 param location string = 'swedencentral'
 
-var prefix = 'azureaihack'
+var prefix = 'msagthack'
 var suffix = uniqueString(resourceGroup().id)
 
 /*

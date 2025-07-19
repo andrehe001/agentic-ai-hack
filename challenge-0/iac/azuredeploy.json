@@ -21,7 +21,7 @@
     }
   },
   "variables": {
-    "prefix": "azureaiagenthack",
+    "prefix": "msagthack",
     "suffix": "[uniqueString(resourceGroup().id)]",
     "storageAccountName": "[replace(format('{0}-sa-{1}', variables('prefix'), variables('suffix')), '-', '')]",
     "logAnalyticsWorkspaceName": "[format('{0}-loganalytics-{1}', variables('prefix'), variables('suffix'))]",
