@@ -155,7 +155,7 @@
     {
       "type": "Microsoft.CognitiveServices/accounts",
       "apiVersion": "2025-04-01-preview",
-      "name": "[parameters('aiFoundryName')]",
+      "name": "[variables('aiFoundryName')]",
       "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
@@ -166,27 +166,27 @@
       "kind": "AIServices",
       "properties": {
         "allowProjectManagement": true,
-        "customSubDomainName": "[parameters('aiFoundryName')]",
+        "customSubDomainName": "[variables('aiFoundryName')]",
         "disableLocalAuth": true
       }
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/projects",
       "apiVersion": "2025-04-01-preview",
-      "name": "[format('{0}/{1}', parameters('aiFoundryName'), parameters('aiProjectName'))]",
+      "name": "[format('{0}/{1}', variables('aiFoundryName'), parameters('aiProjectName'))]",
       "location": "[parameters('location')]",
       "identity": {
         "type": "SystemAssigned"
       },
       "properties": {},
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
       ]
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('aiFoundryName'), 'gpt-4o-mini')]",
+      "name": "[format('{0}/{1}', variables('aiFoundryName'), 'gpt-4o-mini')]",
       "sku": {
         "capacity": 1,
         "name": "GlobalStandard"
@@ -198,13 +198,13 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
       ]
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('aiFoundryName'), 'text-embedding-ada-002')]",
+      "name": "[format('{0}/{1}', variables('aiFoundryName'), 'text-embedding-ada-002')]",
       "sku": {
         "capacity": 1,
         "name": "GlobalStandard"
@@ -216,53 +216,53 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]",
-        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('aiFoundryName'), 'gpt-4o-mini')]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', variables('aiFoundryName'), 'gpt-4o-mini')]"
 
       ]
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName')), resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')), variables('cognitiveServicesUserRoleId'))]",
-      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', parameters('aiFoundryName'))]",
+      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')), variables('cognitiveServicesUserRoleId'))]",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('aiFoundryName'))]",
       "properties": {
         "roleDefinitionId": "[variables('cognitiveServicesUserRoleId')]",
-        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]",
-        "[resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName'))]"
       ]
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName')), variables('searchServiceContributorRoleId'))]",
+      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId'))]",
       "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
       "properties": {
         "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
-        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), '2025-04-01-preview', 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
         "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
       ]
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')), variables('searchServiceContributorRoleId'))]",
+      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')), variables('searchServiceContributorRoleId'))]",
       "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
       "properties": {
         "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
-        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
         "principalType": "ServicePrincipal"
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName'))]",
         "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
       ]
     }
@@ -286,11 +286,11 @@
     },
     "aiFoundryHubName": {
       "type": "string",
-      "value": "[parameters('aiFoundryName')]"
+      "value": "[variables('aiFoundryName')]"
     },
     "aiFoundryProjectName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview').name]"
+      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')), '2025-04-01-preview').name]"
     },
     "keyVaultName": {
       "type": "string",
@@ -310,11 +310,11 @@
     },
     "aiFoundryHubEndpoint": {
       "type": "string",
-      "value": "[format('https://ml.azure.com/home?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName')))]"
+      "value": "[format('https://ml.azure.com/home?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')))]"
     },
     "aiFoundryProjectEndpoint": {
       "type": "string",
-      "value": "[format('https://ai.azure.com/build/overview?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts/projects', parameters('aiFoundryName'), parameters('aiProjectName')))]"
+      "value": "[format('https://ai.azure.com/build/overview?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), parameters('aiProjectName')))]"
     }
   }
 }
