@@ -205,32 +205,14 @@
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('aiFoundryName'), '4.1-mini')]",
+      "name": "[format('{0}/{1}', parameters('aiFoundryName'), 'gpt-4o-mini')]",
       "sku": {
         "capacity": 1,
         "name": "GlobalStandard"
       },
       "properties": {
         "model": {
-          "name": "4.1-mini",
-          "format": "OpenAI"
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.CognitiveServices/accounts/deployments",
-      "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', parameters('aiFoundryName'), 'gpt-35-turbo')]",
-      "sku": {
-        "capacity": 1,
-        "name": "GlobalStandard"
-      },
-      "properties": {
-        "model": {
-          "name": "gpt-35-turbo",
+          "name": "gpt-4o-mini",
           "format": "OpenAI"
         }
       },
