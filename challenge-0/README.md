@@ -11,9 +11,20 @@ If something is not working correctly, please do let your coach know!
 Before you start, please fork this repository to your GitHub account by clicking the `Fork` button in the upper right corner of the repository's main screen (or follow the [documentation](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/working-with-forks/fork-a-repo#forking-a-repository)). This will allow you to make changes to the repository and save your progress.
 
 ## 1.2 Resource Deployment Guide
-The first step on this hackathon will be to create the resources we will use throughout the day. Clicking on the button bellow will redirect you to the Azure portal to deploy the resources using the [ARM template](iac) provided in this repository.
+The first step on this hackathon will be to create the resources we will use throughout the day. You can deploy using either the one-click button or manual method below.
 
+### Method 1: One-Click Deploy
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmartaldsantos%2Fagentic-ai-hack%2Fmain%2Fchallenge-0%2Fiac%2Fazuredeploy.json)
+
+### Method 2: Manual Deploy (if button doesn't work)
+If the above button gives a CORS error, follow these steps:
+
+1. **Download the template**: Right-click [this link](https://raw.githubusercontent.com/martaldsantos/agentic-ai-hack/main/challenge-0/iac/azuredeploy.json) and save the JSON file
+2. **Open Azure Portal**: Go to [portal.azure.com](https://portal.azure.com)
+3. **Create Custom Deployment**: Search for "Deploy a custom template" or go to [Custom deployment](https://portal.azure.com/#create/Microsoft.Template)
+4. **Upload template**: Click "Upload a file" and select the downloaded JSON file
+5. **Configure**: Select subscription, resource group, and region
+6. **Deploy**: Click "Review + create" then "Create"
 
 **NOTE:** Deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 

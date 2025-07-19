@@ -4,6 +4,12 @@
 @description('Azure location where resources should be deployed (e.g., swedencentral)')
 param location string = 'swedencentral'
 
+@description('Friendly name for your Azure AI Foundry hub resource')
+param aiFoundryName string = 'aifoundry'
+
+@description('Name for the AI project')
+param aiProjectName string = 'my-ai-project'
+
 var prefix = 'msagthack'
 var suffix = uniqueString(resourceGroup().id)
 
@@ -20,6 +26,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
+  properties: {
+    allowBlobPublicAccess: false
+    networkAcls: {
+      defaultAction: 'Allow'
+    }
+  }
 }
 
 /*
@@ -56,6 +68,8 @@ resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
   }
   properties: {
     hostingMode: 'default'
+    replicaCount: 1
+    partitionCount: 1
   }
 }
 
@@ -90,11 +104,27 @@ resource apiManagement 'Microsoft.ApiManagement/service@2023-05-01-preview' = {
 }
 
 /*
-  Create Azure AI Foundry Hub
+  Create Container Registry
 */
 
-var aiFoundryHubName = '${prefix}-aifoundry-hub-${suffix}'
-var keyVaultName = '${prefix}-kv-${suffix}'
+var containerRegistryName = replace('${prefix}cr${suffix}', '-', '')
+
+resource containerRegistry 'Microsoft.ContainerRegistry/registries@2023-07-01' = {
+  name: containerRegistryName
+  location: location
+  sku: {
+    name: 'Basic'
+  }
+  properties: {
+    adminUserEnabled: true
+  }
+}
+
+/*
+  Create Application Insights and Key Vault
+*/
+
+var keyVaultName = '${prefix}kv${suffix}'  // Shortened to fit 24 char limit
 var applicationInsightsName = '${prefix}-appinsights-${suffix}'
 
 // Application Insights
@@ -128,66 +158,120 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
-// Azure AI Foundry Hub
-resource aiFoundryHub 'Microsoft.MachineLearningServices/workspaces@2024-04-01' = {
-  name: aiFoundryHubName
+/*
+  An AI Foundry resources is a variant of a CognitiveServices/account resource type
+*/ 
+resource aiFoundry 'Microsoft.CognitiveServices/accounts@2025-04-01-preview' = {
+  name: aiFoundryName
   location: location
   identity: {
     type: 'SystemAssigned'
   }
-  kind: 'Hub'
+  sku: {
+    name: 'S0'
+  }
+  kind: 'AIServices'
   properties: {
-    friendlyName: aiFoundryHubName
-    storageAccount: storageAccount.id
-    keyVault: keyVault.id
-    applicationInsights: applicationInsights.id
-    hbiWorkspace: false
-    managedNetwork: {
-      isolationMode: 'Disabled'
-    }
-    v1LegacyMode: false
-    publicNetworkAccess: 'Enabled'
-    discoveryUrl: 'https://${location}.api.azureml.ms/discovery'
+    // required to work in AI Foundry
+    allowProjectManagement: true 
+
+    // Defines developer API endpoint subdomain
+    customSubDomainName: aiFoundryName
+
+    disableLocalAuth: true
   }
 }
 
 /*
-  Create Azure OpenAI Service for AI Foundry Hub
+  Developer APIs are exposed via a project, which groups in- and outputs that relate to one use case, including files.
+  Its advisable to create one project right away, so development teams can directly get started.
+  Projects may be granted individual RBAC permissions and identities on top of what account provides.
+*/ 
+resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-preview' = {
+  name: aiProjectName
+  parent: aiFoundry
+  location: location
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {}
+}
+
+/*
+  Optionally deploy a model to use in playground, agents and other tools.
+*/
+resource gpt4MiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+  parent: aiFoundry
+  name: '4.1-mini'
+  sku : {
+    capacity: 1
+    name: 'GlobalStandard'
+  }
+  properties: {
+    model:{
+      name: '4.1-mini'
+      format: 'OpenAI'
+    }
+  }
+}
+
+resource embeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
+  parent: aiFoundry
+  name: 'text-embedding-ada-002'
+  sku : {
+    capacity: 1
+    name: 'GlobalStandard'
+  }
+  properties: {
+    model:{
+      name: 'text-embedding-ada-002'
+      format: 'OpenAI'
+    }
+  }
+}
+
+/*
+  Create RBAC assignments for the AI Hub and Project managed identities
 */
 
-var openAIServiceName = '${prefix}-openai-${suffix}'
+// Get the Cognitive Services User role definition
+var cognitiveServicesUserRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a97b65f3-24c7-4388-baec-2e87135dc908')
 
-resource openAIService 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
-  name: openAIServiceName
-  location: location
-  sku: {
-    name: 'S0'
-  }
-  kind: 'OpenAI'
+// Grant the AI Project access to the AI Foundry service
+resource projectAIFoundryRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(aiFoundry.id, aiProject.id, cognitiveServicesUserRoleId)
+  scope: aiFoundry
   properties: {
-    apiProperties: {
-      statisticsEnabled: false
-    }
-    customSubDomainName: openAIServiceName
+    roleDefinitionId: cognitiveServicesUserRoleId
+    principalId: aiProject.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
-resource gpt4oMiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01' = {
-  name: 'gpt-4o-mini'
-  parent: openAIService
+// Get the Search Service Contributor role definition
+var searchServiceContributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0')
+
+// Grant the AI Foundry access to the Search service
+resource aiFoundrySearchRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(searchService.id, aiFoundry.id, searchServiceContributorRoleId)
+  scope: searchService
   properties: {
-    model: {
-      format: 'OpenAI'
-      name: 'gpt-4o-mini'
-      version: '2024-07-18'
-    }
-  }
-  sku: {
-    name: 'GlobalStandard'
-    capacity: 50
+    roleDefinitionId: searchServiceContributorRoleId
+    principalId: aiFoundry.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }
 
+// Grant the AI Project access to the Search service
+resource projectSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(searchService.id, aiProject.id, searchServiceContributorRoleId)
+  scope: searchService
+  properties: {
+    roleDefinitionId: searchServiceContributorRoleId
+    principalId: aiProject.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
 
 /*
   Return output values
@@ -197,5 +281,13 @@ output storageAccountName string = storageAccountName
 output logAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
 output searchServiceName string = searchServiceName
 output apiManagementName string = apimServiceName
-output aiFoundryHubName string = aiFoundryHubName
+output aiFoundryHubName string = aiFoundryName
+output aiFoundryProjectName string = aiProject.name
 output keyVaultName string = keyVaultName
+output containerRegistryName string = containerRegistryName
+output applicationInsightsName string = applicationInsightsName
+
+// Output important endpoints and connection information
+output searchServiceEndpoint string = 'https://${searchService.name}.search.windows.net/'
+output aiFoundryHubEndpoint string = 'https://ml.azure.com/home?wsid=${aiFoundry.id}'
+output aiFoundryProjectEndpoint string = 'https://ai.azure.com/build/overview?wsid=${aiProject.id}'
