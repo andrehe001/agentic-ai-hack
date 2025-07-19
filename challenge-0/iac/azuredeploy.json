@@ -205,7 +205,7 @@
     {
       "type": "Microsoft.CognitiveServices/accounts/deployments",
       "apiVersion": "2024-10-01",
-      "name": "[format('{0}/{1}', variables('openAIServiceName'), '4.1-mini')]",
+      "name": "[format('{0}/{1}', variables('aiFoundryName'), '4.1-mini')]",
       "sku": {
         "capacity": 1,
         "name": "GlobalStandard"
@@ -217,7 +217,7 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', variables('openAIServiceName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
       ]
     },
     {
