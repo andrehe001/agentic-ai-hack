@@ -21,7 +21,7 @@
     },
     "aiFoundryName": {
       "type": "string",
-      "defaultValue":  "[format('aifoundry-{0}', uniqueString(resourceGroup().id))]",
+      "defaultValue":  "my-ai-foundry-hack",
       "metadata": {
         "description": "Friendly name for your Azure AI Foundry hub resource"
       }
@@ -235,7 +235,9 @@
         }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', parameters('aiFoundryName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/deployments', parameters('aiFoundryName'), 'gpt-4o-mini')]"
+
       ]
     },
     {
