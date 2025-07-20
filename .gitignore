@@ -192,3 +192,9 @@ cython_debug/
 #  refer to https://docs.cursor.com/context/ignore-files
 .cursorignore
 .cursorindexingignore
+
+
+# Other files
+azure_search_integration_summary.json
+processed_documents_for_vectorization.json
+processing_summary_gpt4o.json
