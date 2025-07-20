@@ -18,6 +18,16 @@
       "metadata": {
         "description": "Azure location where resources should be deployed (e.g., swedencentral)"
       }
+    },
+    "locationDocumentIntelligence": {
+      "type": "string",
+      "defaultValue": "westeurope",
+      "allowedValues": [
+        "westeurope"
+      ],
+      "metadata": {
+        "description": "Azure location where Azure Document Intelligence should be deployed (e.g., westeurope)"
+      }
     }
   },
   "variables": {
@@ -31,6 +41,7 @@
     "keyVaultName": "[format('{0}kv{1}', variables('prefix'), variables('suffix'))]",
     "aiFoundryName": "[format('{0}-aifoundry-{1}', variables('prefix'), variables('suffix'))]",
     "aiProjectName": "[format('{0}-aiproject-{1}', variables('prefix'), variables('suffix'))]",
+    "documentIntelligenceName": "[format('{0}-di-{1}', variables('prefix'), variables('suffix'))]",
     "applicationInsightsName": "[format('{0}-appinsights-{1}', variables('prefix'), variables('suffix'))]",
     "cognitiveServicesUserRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a97b65f3-24c7-4388-baec-2e87135dc908')]",
     "searchServiceContributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0')]"
@@ -131,6 +142,22 @@
       "dependsOn": [
         "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
       ]
+    },
+    {
+      "type": "Microsoft.CognitiveServices/accounts",
+      "apiVersion": "2023-05-01",
+      "name": "[variables('documentIntelligenceName')]",
+      "location": "[parameters('locationDocumentIntelligence')]",
+      "sku": {
+        "name": "S0"
+      },
+      "kind": "FormRecognizer",
+      "properties": {
+        "customSubDomainName": "[variables('documentIntelligenceName')]",
+        "apiProperties": {
+          "statisticsEnabled": false
+        }
+      }
     },
     {
       "type": "Microsoft.KeyVault/vaults",
@@ -315,6 +342,10 @@
     "aiFoundryProjectEndpoint": {
       "type": "string",
       "value": "[format('https://ai.azure.com/build/overview?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')))]"
+    },
+    "documentIntelligenceName": {
+      "type": "string",
+      "value": "[variables('documentIntelligenceName')]"
     }
   }
 }

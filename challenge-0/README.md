@@ -48,30 +48,27 @@ Please select your forked repository from the dropdown and, if necessary, adjust
 
 Go back to your `Azure Portal` and find your `Resource Group`that should by now contain 9 resources and look like this:
 
-![image](https://github.com/user-attachments/assets/e04298dd-a601-47a2-8fda-bd0cac19f313)
-
+![alt text](image.png)
 
 ## 1.5 Let's retrieve the necessary keys
 After deploying the resources, you will need to configure the environment variables in the `.env` file. The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created running the following command within the terminal in your Codespace:
 
 ```bash
-cd Challenge1
-./get-keys.sh --resource-group <resource-group-name>
+cd challenge-0 && ./get-keys.sh --resource-group <resource-group-name>
 ```
 
 This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository. If needed, script will prompt you to sign in to your Azure account.
+
 
 ## 1.6 Verify `.env` setup
 
 When the script is finished, review the `.env` file to ensure that all the values are correct. If you need to make any changes, you can do so manually.
 
-The default sample has an `.env.sample` file that shows the relevant environment variables that need to be configured in this project. The script should create a `.env` file that has these same variables _but populated with the right values_ for your Azure resources.
+The repo has an `.env.sample` file that shows the relevant environment variables that need to be configured in this project. The script should create a `.env` file that has these same variables _but populated with the right values_ for your Azure resources.
 
 If the file is not created, simply copy over `.env.sample` to `.env` - then populate those values manually from the respective Azure resource pages using the Azure Portal.
 
 ## Conclusion
-By reaching this section you should have every resource and installed the requirements necessary to conduct the hackathon. You have deployed an Azure AI Document Intelligence service, an Azure Cosmos DB account, an Azure Storage Account and Azure OpenAI Service.
-
-In the next challenges, you will use these services to build a strong document processing workflow.
+By reaching this section you should have every resource and installed the requirements necessary to conduct the hackathon. In the next challenges, you will use these services to start strongly your Azure AI Agents journey.
 
 Now the real fun begins!

@@ -6,3 +6,7 @@ uvicorn>=0.24.0
 typing-extensions>=4.7.0
 uv
 httpx
+azure-storage-blob
+azure-ai-formrecognizer
+pandas
+tqdm

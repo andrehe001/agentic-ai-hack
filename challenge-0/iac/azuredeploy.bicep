@@ -9,6 +9,7 @@ param aiFoundryName string = 'aifoundry'
 
 @description('Name for the AI project')
 param aiProjectName string = 'my-ai-project'
+param locationDocumentIntelligence string = 'westeurope' // West Europe hast the latest models needed for Document Intelligence
 
 var prefix = 'msagthack'
 var suffix = uniqueString(resourceGroup().id)
@@ -53,6 +54,29 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06
     }
   }
 }
+
+/*
+  Create Azure Document Intelligence
+*/
+
+var documentIntelligenceName = '${prefix}-di-${suffix}'
+
+resource documentIntelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
+  name: documentIntelligenceName
+  location: locationDocumentIntelligence
+  sku: {
+    name: 'S0'
+  }
+  kind: 'FormRecognizer'
+  properties: {
+    customSubDomainName: documentIntelligenceName
+    apiProperties: {
+      statisticsEnabled: false
+    }
+  }
+}
+
+
 
 /*
   Create Azure AI Search
@@ -286,6 +310,8 @@ output aiFoundryProjectName string = aiProject.name
 output keyVaultName string = keyVaultName
 output containerRegistryName string = containerRegistryName
 output applicationInsightsName string = applicationInsightsName
+output documentIntelligenceName string = documentIntelligenceName
+
 
 // Output important endpoints and connection information
 output searchServiceEndpoint string = 'https://${searchService.name}.search.windows.net/'

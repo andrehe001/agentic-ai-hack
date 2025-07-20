@@ -36,48 +36,89 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Get output parameters from last deployment to the resource group and store them as variables
+# Get output parameters from last deployment using Azure CLI queries instead of jq
 echo "Getting the output parameters from the last deployment '$deploymentName' in '$resourceGroupName'..."
-az deployment group show --resource-group $resourceGroupName --name $deploymentName --query properties.outputs > tmp_outputs.json
-if [ $? -ne 0 ]; then
-    echo "Error occurred while fetching the output parameters. Exiting..."
-    exit 1
-fi
 
-# Extract the resource names from the output parameters (matching bicep outputs)
-echo "Extracting the resource names from the output parameters..."
-storageAccountName=$(jq -r '.storageAccountName.value' tmp_outputs.json)
-logAnalyticsWorkspaceName=$(jq -r '.logAnalyticsWorkspaceName.value' tmp_outputs.json)
-searchServiceName=$(jq -r '.searchServiceName.value' tmp_outputs.json)
-apiManagementName=$(jq -r '.apiManagementName.value' tmp_outputs.json)
-aiFoundryHubName=$(jq -r '.aiFoundryHubName.value' tmp_outputs.json)
-aiFoundryProjectName=$(jq -r '.aiFoundryProjectName.value' tmp_outputs.json)
-keyVaultName=$(jq -r '.keyVaultName.value' tmp_outputs.json)
-containerRegistryName=$(jq -r '.containerRegistryName.value' tmp_outputs.json)
-applicationInsightsName=$(jq -r '.applicationInsightsName.value' tmp_outputs.json)
+# Extract the resource names directly using Azure CLI queries
+echo "Extracting the resource names from the deployment outputs..."
+storageAccountName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.storageAccountName.value" -o tsv 2>/dev/null || echo "")
+logAnalyticsWorkspaceName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.logAnalyticsWorkspaceName.value" -o tsv 2>/dev/null || echo "")
+searchServiceName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.searchServiceName.value" -o tsv 2>/dev/null || echo "")
+apiManagementName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.apiManagementName.value" -o tsv 2>/dev/null || echo "")
+aiFoundryHubName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryHubName.value" -o tsv 2>/dev/null || echo "")
+aiFoundryProjectName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryProjectName.value" -o tsv 2>/dev/null || echo "")
+keyVaultName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.keyVaultName.value" -o tsv 2>/dev/null || echo "")
+containerRegistryName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.containerRegistryName.value" -o tsv 2>/dev/null || echo "")
+applicationInsightsName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.applicationInsightsName.value" -o tsv 2>/dev/null || echo "")
 
 # Extract endpoint URLs
-searchServiceEndpoint=$(jq -r '.searchServiceEndpoint.value' tmp_outputs.json)
-aiFoundryHubEndpoint=$(jq -r '.aiFoundryHubEndpoint.value' tmp_outputs.json)
-aiFoundryProjectEndpoint=$(jq -r '.aiFoundryProjectEndpoint.value' tmp_outputs.json)
+searchServiceEndpoint=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.searchServiceEndpoint.value" -o tsv 2>/dev/null || echo "")
+aiFoundryHubEndpoint=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryHubEndpoint.value" -o tsv 2>/dev/null || echo "")
+aiFoundryProjectEndpoint=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryProjectEndpoint.value" -o tsv 2>/dev/null || echo "")
 
-# Delete the temporary file
-rm tmp_outputs.json
+# If deployment outputs are empty, try to discover resources by type
+if [ -z "$storageAccountName" ]; then
+    echo "Deployment outputs not found, discovering resources by type..."
+    storageAccountName=$(az storage account list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    searchServiceName=$(az search service list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    aiFoundryHubName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='AIServices'].name | [0]" -o tsv 2>/dev/null || echo "")
+    applicationInsightsName=$(az monitor app-insights component show --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+fi
 
 # Get the keys from the resources
 echo "Getting the keys from the resources..."
-storageAccountKey=$(az storage account keys list --account-name $storageAccountName --resource-group $resourceGroupName --query "[0].value" -o tsv)
-storageAccountConnectionString=$(az storage account show-connection-string --name $storageAccountName --resource-group $resourceGroupName --query connectionString -o tsv)
 
-# Get AI Foundry endpoint and key
-aiFoundryEndpoint=$(az cognitiveservices account show --name $aiFoundryHubName --resource-group $resourceGroupName --query properties.endpoint -o tsv)
-aiFoundryKey=$(az cognitiveservices account keys list --name $aiFoundryHubName --resource-group $resourceGroupName --query key1 -o tsv)
+# Storage account
+if [ -n "$storageAccountName" ]; then
+    storageAccountKey=$(az storage account keys list --account-name $storageAccountName --resource-group $resourceGroupName --query "[0].value" -o tsv 2>/dev/null || echo "")
+    storageAccountConnectionString=$(az storage account show-connection-string --name $storageAccountName --resource-group $resourceGroupName --query connectionString -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: Storage account not found"
+    storageAccountKey=""
+    storageAccountConnectionString=""
+fi
 
-# Get Search service key
-searchServiceKey=$(az search admin-key show --resource-group $resourceGroupName --service-name $searchServiceName --query primaryKey -o tsv)
+# AI Foundry/Cognitive Services
+if [ -n "$aiFoundryHubName" ]; then
+    aiFoundryEndpoint=$(az cognitiveservices account show --name $aiFoundryHubName --resource-group $resourceGroupName --query properties.endpoint -o tsv 2>/dev/null || echo "")
+    aiFoundryKey=$(az cognitiveservices account keys list --name $aiFoundryHubName --resource-group $resourceGroupName --query key1 -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: AI Foundry Hub not found"
+    aiFoundryEndpoint=""
+    aiFoundryKey=""
+fi
 
-# Get Application Insights instrumentation key
-appInsightsInstrumentationKey=$(az monitor app-insights component show --app $applicationInsightsName --resource-group $resourceGroupName --query instrumentationKey -o tsv)
+# Search service
+if [ -n "$searchServiceName" ]; then
+    searchServiceKey=$(az search admin-key show --resource-group $resourceGroupName --service-name $searchServiceName --query primaryKey -o tsv 2>/dev/null || echo "")
+    if [ -z "$searchServiceEndpoint" ]; then
+        searchServiceEndpoint="https://${searchServiceName}.search.windows.net"
+    fi
+else
+    echo "Warning: Search service not found"
+    searchServiceKey=""
+    searchServiceEndpoint=""
+fi
+
+# Application Insights
+if [ -n "$applicationInsightsName" ]; then
+    appInsightsInstrumentationKey=$(az monitor app-insights component show --app $applicationInsightsName --resource-group $resourceGroupName --query instrumentationKey -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: Application Insights not found"
+    appInsightsInstrumentationKey=""
+fi
+
+# Get Document Intelligence service name and keys
+echo "Getting Document Intelligence service information..."
+docIntelServiceName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='FormRecognizer'].name | [0]" -o tsv 2>/dev/null || echo "")
+if [ -n "$docIntelServiceName" ]; then
+    docIntelEndpoint=$(az cognitiveservices account show --name $docIntelServiceName --resource-group $resourceGroupName --query properties.endpoint -o tsv 2>/dev/null || echo "")
+    docIntelKey=$(az cognitiveservices account keys list --name $docIntelServiceName --resource-group $resourceGroupName --query key1 -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: No Document Intelligence (FormRecognizer) service found in resource group. You may need to deploy one."
+    docIntelEndpoint=""
+    docIntelKey=""
+fi
 
 # Overwrite the existing .env file
 if [ -f ../.env ]; then
@@ -86,9 +127,17 @@ fi
 
 # Store the keys and properties in a file
 echo "Storing the keys and properties in '.env' file..."
-echo "STORAGE_ACCOUNT_NAME=\"$storageAccountName\"" >> ../.env
-echo "STORAGE_KEY=\"$storageAccountKey\"" >> ../.env
-echo "STORAGE_CONNECTION_STRING=\"$storageAccountConnectionString\"" >> ../.env
+
+# Azure Storage (with both naming conventions)
+echo "AZURE_STORAGE_ACCOUNT_NAME=\"$storageAccountName\"" >> ../.env
+echo "AZURE_STORAGE_ACCOUNT_KEY=\"$storageAccountKey\"" >> ../.env
+echo "AZURE_STORAGE_CONNECTION_STRING=\"$storageAccountConnectionString\"" >> ../.env
+
+# Azure AI Document Intelligence
+echo "AZURE_DOC_INTEL_ENDPOINT=\"$docIntelEndpoint\"" >> ../.env
+echo "AZURE_DOC_INTEL_KEY=\"$docIntelKey\"" >> ../.env
+
+# Other Azure services
 echo "LOG_ANALYTICS_WORKSPACE_NAME=\"$logAnalyticsWorkspaceName\"" >> ../.env
 echo "SEARCH_SERVICE_NAME=\"$searchServiceName\"" >> ../.env
 echo "SEARCH_SERVICE_ENDPOINT=\"$searchServiceEndpoint\"" >> ../.env
@@ -111,3 +160,29 @@ echo "AZURE_OPENAI_ENDPOINT=\"$aiFoundryEndpoint\"" >> ../.env
 echo "AZURE_OPENAI_KEY=\"$aiFoundryKey\"" >> ../.env
 
 echo "Keys and properties are stored in '.env' file successfully."
+
+# Display summary of what was configured
+echo ""
+echo "=== Configuration Summary ==="
+echo "Storage Account: $storageAccountName"
+echo "Search Service: $searchServiceName"
+echo "AI Foundry Hub: $aiFoundryHubName"
+if [ -n "$docIntelServiceName" ]; then
+    echo "Document Intelligence: $docIntelServiceName"
+else
+    echo "Document Intelligence: NOT FOUND - You may need to deploy this service"
+fi
+echo "Environment file created: ../.env"
+
+# Show what needs to be deployed
+missing_services=""
+if [ -z "$storageAccountName" ]; then missing_services="$missing_services Storage"; fi
+if [ -z "$searchServiceName" ]; then missing_services="$missing_services Search"; fi
+if [ -z "$aiFoundryHubName" ]; then missing_services="$missing_services AI-Foundry"; fi
+if [ -z "$docIntelServiceName" ]; then missing_services="$missing_services Document-Intelligence"; fi
+
+if [ -n "$missing_services" ]; then
+    echo ""
+    echo "⚠️  Missing services:$missing_services"
+    echo "You may need to deploy these services manually or check your deployment template."
+fi

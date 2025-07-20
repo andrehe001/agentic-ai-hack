@@ -1,0 +1,42 @@
+{
+  "vectorization_summary": {
+    "completion_date": "2025-07-20T15:34:24.777090",
+    "total_documents_processed": 11,
+    "total_chunks_created": 11,
+    "total_vectors_generated": 11,
+    "embedding_model": "text-embedding-ada-002",
+    "embedding_dimension": 1536,
+    "chunk_configuration": {
+      "chunk_size": 1000,
+      "chunk_overlap": 200
+    }
+  },
+  "categories_processed": {
+    "policies": {
+      "chunks": 5,
+      "total_characters": 39526,
+      "files": [
+        "high_value_vehicle_policy.md",
+        "commercial_auto_policy.md",
+        "comprehensive_auto_policy.md",
+        "liability_only_policy.md",
+        "motorcycle_policy.md"
+      ],
+      "unique_files": 5
+    },
+    "claims": {
+      "chunks": 6,
+      "total_characters": 15249,
+      "files": [
+        "crash4.jpeg",
+        "crash1.jpg",
+        "crash2.jpg",
+        "crash5.jpg",
+        "crash3.jpg",
+        "invoice.png"
+      ],
+      "unique_files": 6
+    }
+  },
+  "ready_for_ai_agents": true
+}
