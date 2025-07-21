@@ -317,7 +317,7 @@
     },
     "aiFoundryProjectName": {
       "type": "string",
-      "value": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), '2025-04-01-preview').name]"
+      "value": "[variables('aiProjectName')]" 
     },
     "keyVaultName": {
       "type": "string",
