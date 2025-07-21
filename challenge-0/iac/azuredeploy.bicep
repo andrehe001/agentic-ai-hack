@@ -314,6 +314,6 @@ output documentIntelligenceName string = documentIntelligenceName
 
 
 // Output important endpoints and connection information
-output searchServiceEndpoint string = 'https://${searchService.name}.search.windows.net/'
+output searchServiceEndpoint string = 'https://${searchServiceName}.search.windows.net/'
 output aiFoundryHubEndpoint string = 'https://ml.azure.com/home?wsid=${aiFoundry.id}'
 output aiFoundryProjectEndpoint string = 'https://ai.azure.com/build/overview?wsid=${aiProject.id}'
