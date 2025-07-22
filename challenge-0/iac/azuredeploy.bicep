@@ -182,6 +182,44 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
+
+/*
+  Create Cosmos DB Account
+*/
+
+var cosmosDbAccountName = '${prefix}-cosmos-${suffix}'
+
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
+  name: cosmosDbAccountName
+  location: location
+  kind: 'GlobalDocumentDB'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
+    locations: [
+      {
+        locationName: location
+        failoverPriority: 0
+        isZoneRedundant: false
+      }
+    ]
+    databaseAccountOfferType: 'Standard'
+    enableAutomaticFailover: false
+    enableMultipleWriteLocations: false
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ]
+  }
+}
+
+
+
 /*
   An AI Foundry resources is a variant of a CognitiveServices/account resource type
 */ 
@@ -298,6 +336,29 @@ resource projectSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@20
 }
 
 /*
+  Create connection between AI Foundry and AI Search
+*/
+resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+  name: '${aiFoundryName}-aisearch'
+  parent: aiFoundry
+  properties: {
+    category: 'CognitiveSearch'
+    target: 'https://${searchService.name}.search.windows.net/'
+    authType: 'ApiKey' // Supported auth types: ApiKey, AAD
+    isSharedToAll: true
+    credentials: { 
+      key: searchService.listAdminKeys().primaryKey
+    }
+    metadata: {
+      ApiType: 'Azure'
+      ResourceId: searchService.id
+      location: searchService.location
+    }
+  }
+}
+
+
+/*
   Return output values
 */
 
@@ -311,9 +372,11 @@ output keyVaultName string = keyVaultName
 output containerRegistryName string = containerRegistryName
 output applicationInsightsName string = applicationInsightsName
 output documentIntelligenceName string = documentIntelligenceName
+output cosmosDbAccountName string = cosmosDbAccountName
 
 
 // Output important endpoints and connection information
 output searchServiceEndpoint string = 'https://${searchServiceName}.search.windows.net/'
 output aiFoundryHubEndpoint string = 'https://ml.azure.com/home?wsid=${aiFoundry.id}'
 output aiFoundryProjectEndpoint string = 'https://ai.azure.com/build/overview?wsid=${aiProject.id}'
+output cosmosDbEndpoint string = cosmosDbAccount.properties.documentEndpoint
