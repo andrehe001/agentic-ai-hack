@@ -333,7 +333,7 @@
     },
     "searchServiceEndpoint": {
       "type": "string",
-      "value": "[format('https://{0}.search.windows.net/', reference(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), '2023-11-01').name)]"
+      "value": "[format('https://{0}.search.windows.net/', variables('searchServiceName'))]"
     },
     "aiFoundryHubEndpoint": {
       "type": "string",
