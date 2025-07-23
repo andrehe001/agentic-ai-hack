@@ -120,6 +120,59 @@ else
     docIntelKey=""
 fi
 
+
+
+# Add this section after getting the search service information (around line 100)
+
+# Get Azure AI Search connection ID
+if [ -n "$aiFoundryHubName" ] && [ -n "$searchServiceName" ]; then
+    echo "Getting Azure AI Search connection ID..."
+    azureAIConnectionId=$(az cognitiveservices account connection list --account-name $aiFoundryHubName --resource-group $resourceGroupName --query "[?contains(name, 'aisearch')].name | [0]" -o tsv 2>/dev/null || echo "")
+    
+    # If no connection found by name pattern, try getting the first CognitiveSearch connection
+    if [ -z "$azureAIConnectionId" ]; then
+        azureAIConnectionId=$(az cognitiveservices account connection list --account-name $aiFoundryHubName --resource-group $resourceGroupName --query "[?properties.category=='CognitiveSearch'].name | [0]" -o tsv 2>/dev/null || echo "")
+    fi
+else
+    echo "Warning: Cannot get Azure AI connection ID - AI Foundry Hub or Search Service not found"
+    azureAIConnectionId=""
+fi
+
+
+if [ -z "$aiFoundryProjectEndpoint" ] && [ -n "$aiFoundryProjectName" ] && [ -n "$aiFoundryHubEndpoint" ]; then
+    # Construct the correct project endpoint format
+    # Extract the hub base URL and construct the API endpoint
+    if [[ "$aiFoundryHubEndpoint" =~ ^https://([^.]+)\.([^/]+) ]]; then
+        hubBase="${BASH_REMATCH[1]}"
+        domainSuffix="${BASH_REMATCH[2]}"
+        aiFoundryProjectEndpoint="https://${hubBase}.${domainSuffix}/api/projects/${aiFoundryProjectName}"
+    else
+        # Fallback: use the hub endpoint pattern but with /api/projects/
+        aiFoundryProjectEndpoint="${aiFoundryHubEndpoint%/}/api/projects/${aiFoundryProjectName}"
+    fi
+fi
+
+# Construct Azure AI Search connection ID directly
+if [ -n "$aiFoundryHubName" ] && [ -n "$searchServiceName" ]; then
+    echo "Constructing Azure AI Search connection ID..."
+    
+    # Get subscription ID
+    subscriptionId=$(az account show --query id -o tsv 2>/dev/null || echo "")
+    
+    if [ -n "$subscriptionId" ]; then
+        # Construct the connection ID based on the pattern you provided
+        # Pattern: /subscriptions/{subscription}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{aiFoundryHub}/connections/{searchServiceWithoutDashes}
+        searchServiceNameNoDashes=$(echo "$searchServiceName" | sed 's/-//g')
+        azureAIConnectionId="/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/${aiFoundryHubName}/connections/${searchServiceNameNoDashes}"
+        echo "Constructed connection ID: $azureAIConnectionId"
+    else
+        echo "Warning: Could not get subscription ID"
+        azureAIConnectionId=""
+    fi
+else
+    echo "Warning: Cannot construct Azure AI connection ID - AI Foundry Hub or Search Service not found"
+    azureAIConnectionId=""
+fi
 # Overwrite the existing .env file
 if [ -f ../.env ]; then
     rm ../.env
@@ -153,6 +206,7 @@ echo "KEY_VAULT_NAME=\"$keyVaultName\"" >> ../.env
 echo "CONTAINER_REGISTRY_NAME=\"$containerRegistryName\"" >> ../.env
 echo "APPLICATION_INSIGHTS_NAME=\"$applicationInsightsName\"" >> ../.env
 echo "APPLICATION_INSIGHTS_INSTRUMENTATION_KEY=\"$appInsightsInstrumentationKey\"" >> ../.env
+echo "AZURE_AI_CONNECTION_ID=\"$azureAIConnectionId\"" >> ../.env
 
 # For backward compatibility, also set OpenAI-style variables pointing to AI Foundry
 echo "AZURE_OPENAI_SERVICE_NAME=\"$aiFoundryHubName\"" >> ../.env
