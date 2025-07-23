@@ -266,7 +266,7 @@ resource gpt4MiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@20
   parent: aiFoundry
   name: 'gpt-4o-mini'
   sku : {
-    capacity: 1
+    capacity: 500
     name: 'GlobalStandard'
   }
   properties: {
@@ -281,7 +281,7 @@ resource embeddingDeployment 'Microsoft.CognitiveServices/accounts/deployments@2
   parent: aiFoundry
   name: 'text-embedding-ada-002'
   sku : {
-    capacity: 1
+    capacity: 100
     name: 'GlobalStandard'
   }
   properties: {

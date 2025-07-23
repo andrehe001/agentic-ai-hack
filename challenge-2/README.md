@@ -34,7 +34,7 @@ You will need:
 
 ## 🛠️ Implementation Tasks
 
-### Part 1 - Creating your Agent Backbone
+### Option 1 - Creating your Agent Backbone - On the Portal
 
 1. Navigate to the Azure portal and login with your account.
 2. Navigate to your resource group.
@@ -145,4 +145,8 @@ Make a summary of the last claim from License plate OH - GHR1984
 My 17-year-old son was driving my car when the accident happened. Are we still covered under policy POL-AUTO-33333?
 ```
 
-### Part 2 - Let's get some action(s)!
+### Option 2 - Creating your Agent Backbone - On the Portal
+
+So far, we have created the beggining of our agent using Azure AI Agent Service in the Portal. Now, **let's start coding!** Our Agent, as of now, is able to access our Azure AI Search, our Vector Database. This is, essentially, your first tool they can access.
+
+Please jump over to the `policy_checker.ipynb` file to complete this guide.
