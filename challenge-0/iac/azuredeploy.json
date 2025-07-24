@@ -326,13 +326,16 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/connections",
-      "apiVersion": "2024-10-01",
+      "apiVersion": "2025-04-01-preview",
       "name": "[format('{0}/{1}-aisearch', variables('aiFoundryName'), variables('aiFoundryName'))]",
       "properties": {
         "category": "CognitiveSearch",
         "target": "[format('https://{0}.search.windows.net', variables('searchServiceName'))]",
-        "authType": "AuthKey",
+        "authType": "ApiKey",
         "isSharedToAll": true,
+        "credentials": {
+          "key": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), '2023-11-01').primaryKey]"
+        },
         "metadata": {
           "ApiType": "Azure",
           "ResourceId": "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]",
@@ -348,7 +351,7 @@
     },
     {
       "type": "Microsoft.CognitiveServices/accounts/connections",
-      "apiVersion": "2024-10-01",
+      "apiVersion": "2025-04-01-preview",
       "name": "[format('{0}/{1}-appinsights', variables('aiFoundryName'), variables('aiFoundryName'))]",
       "properties": {
         "category": "ApplicationInsights",

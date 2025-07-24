@@ -338,7 +338,7 @@ resource projectSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@20
 /*
   Create connection between AI Foundry and AI Search with API Key
 */
-resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2024-10-01' = {
+resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
   name: '${aiFoundryName}-aisearch'
   parent: aiFoundry
   properties: {
