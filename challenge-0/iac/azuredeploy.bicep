@@ -371,7 +371,7 @@ resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections
   properties: {
     category: 'ApplicationInsights'
     target: applicationInsights.properties.ConnectionString
-    authType: 'Key' // Supported auth types: Key, AAD
+    authType: 'ApiKey' // Supported auth types: Key, AAD
     isSharedToAll: true
     credentials: { 
       key: applicationInsights.properties.InstrumentationKey
