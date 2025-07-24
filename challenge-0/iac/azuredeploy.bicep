@@ -375,11 +375,8 @@ resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections
   properties: {
     category: 'AppInsights'
     target: applicationInsights.id
-    authType: 'ApiKey' // Use Azure AD authentication instead of ApiKey
+    authType: 'SystemAssignedIdentity' // Use managed identity
     isSharedToAll: true
-    credentials: {
-      key: applicationInsights.properties.ConnectionString
-    }
     metadata: {
       ResourceId: applicationInsights.id
       location: applicationInsights.location
