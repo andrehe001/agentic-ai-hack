@@ -354,7 +354,7 @@
       "properties": {
         "category": "ApplicationInsights",
         "target": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]",
-        "authType": "Key",
+        "authType": "ApiKey",
         "isSharedToAll": true,
         "credentials": {
           "key": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
