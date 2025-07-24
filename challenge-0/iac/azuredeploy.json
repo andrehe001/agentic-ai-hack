@@ -331,7 +331,7 @@
       "properties": {
         "category": "CognitiveSearch",
         "target": "[format('https://{0}.search.windows.net', variables('searchServiceName'))]",
-        "authType": "AAD",
+        "authType": "AuthKey",
         "isSharedToAll": true,
         "metadata": {
           "ApiType": "Azure",
@@ -341,9 +341,11 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
-        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId')))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId')))]"
       ]
-    },
+    }
     {
       "type": "Microsoft.CognitiveServices/accounts/connections",
       "apiVersion": "2024-10-01",
