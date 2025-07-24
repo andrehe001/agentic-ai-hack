@@ -295,6 +295,51 @@
       ]
     },
     {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId'))]",
+      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
+        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId'))]",
+      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName'))]",
+        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+      ]
+    },
+    {
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('cognitiveServicesUserRoleId'))]",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('aiFoundryName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('cognitiveServicesUserRoleId')]",
+        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
+        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName'))]"
+      ]
+    },
+    {
       "type": "Microsoft.CognitiveServices/accounts/connections",
       "apiVersion": "2024-10-01",
       "name": "[format('{0}/{1}-aisearch', variables('aiFoundryName'), variables('aiFoundryName'))]",
