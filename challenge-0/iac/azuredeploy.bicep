@@ -373,10 +373,13 @@ resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections
   name: '${aiFoundryName}-appinsights'
   parent: aiFoundry
   properties: {
-    category: 'ApplicationInsights'
-    target: applicationInsights.properties.ConnectionString
-    authType: 'AAD' // Use Azure AD authentication instead of ApiKey
+    category: 'AppInsights'
+    target: applicationInsights.id
+    authType: 'ApiKey' // Use Azure AD authentication instead of ApiKey
     isSharedToAll: true
+    credentials: {
+      key: applicationInsights.properties.ConnectionString
+    }
     metadata: {
       ResourceId: applicationInsights.id
       location: applicationInsights.location
