@@ -346,28 +346,6 @@
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
         "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
       ]
-    },
-    {
-      "type": "Microsoft.CognitiveServices/accounts/connections",
-      "apiVersion": "2025-04-01-preview",
-      "name": "[format('{0}/{1}-appinsights', variables('aiFoundryName'), variables('aiFoundryName'))]",
-      "properties": {
-        "category": "AppInsights",
-        "target": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]",
-        "authType": "ApiKey",
-        "isSharedToAll": true,
-        "credentials": {
-          "key": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
-        },
-        "metadata": {
-          "ResourceId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
-          "location": "[parameters('location')]"
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
-        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
-      ]
     }
   ],
   "outputs": {

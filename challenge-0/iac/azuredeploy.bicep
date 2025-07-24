@@ -365,18 +365,17 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
 /*
   Create connection between AI Foundry and Application Insights
 */
-/*
-  Note: The connection uses Azure AD authentication instead of API Key.
-  Ensure that the AI Foundry managed identity has the necessary permissions on Application Insights.
-*/
-resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2020-02-02-preview' = {
+resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
   name: '${aiFoundryName}-appinsights'
   parent: aiFoundry
   properties: {
-    category: 'AppInsights'
-    target: applicationInsights.id
-    authType: 'SystemAssignedIdentity' // Use managed identity
+    category: 'ApplicationInsights'
+    target: applicationInsights.properties.ConnectionString
+    authType: 'ConnectionString'
     isSharedToAll: true
+    credentials: {
+      connectionString: applicationInsights.properties.ConnectionString
+    }
     metadata: {
       ResourceId: applicationInsights.id
       location: applicationInsights.location
