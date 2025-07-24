@@ -369,7 +369,7 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
   Note: The connection uses Azure AD authentication instead of API Key.
   Ensure that the AI Foundry managed identity has the necessary permissions on Application Insights.
 */
-resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2020-02-02-preview' = {
   name: '${aiFoundryName}-appinsights'
   parent: aiFoundry
   properties: {
