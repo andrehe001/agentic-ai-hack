@@ -352,7 +352,7 @@
       "apiVersion": "2025-04-01-preview",
       "name": "[format('{0}/{1}-appinsights', variables('aiFoundryName'), variables('aiFoundryName'))]",
       "properties": {
-        "category": "ApplicationInsights",
+        "category": "AppInsights",
         "target": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]",
         "authType": "ApiKey",
         "isSharedToAll": true,
