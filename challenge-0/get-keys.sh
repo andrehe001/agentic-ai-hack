@@ -139,16 +139,55 @@ else
 fi
 
 
-if [ -z "$aiFoundryProjectEndpoint" ] && [ -n "$aiFoundryProjectName" ] && [ -n "$aiFoundryHubEndpoint" ]; then
-    # Construct the correct project endpoint format
-    # Extract the hub base URL and construct the API endpoint
-    if [[ "$aiFoundryHubEndpoint" =~ ^https://([^.]+)\.([^/]+) ]]; then
-        hubBase="${BASH_REMATCH[1]}"
-        domainSuffix="${BASH_REMATCH[2]}"
-        aiFoundryProjectEndpoint="https://${hubBase}.${domainSuffix}/api/projects/${aiFoundryProjectName}"
-    else
-        # Fallback: use the hub endpoint pattern but with /api/projects/
-        aiFoundryProjectEndpoint="${aiFoundryHubEndpoint%/}/api/projects/${aiFoundryProjectName}"
+# If deployment outputs are empty or missing project info, try to discover resources by type
+if [ -z "$storageAccountName" ] || [ -z "$aiFoundryProjectName" ]; then
+    if [ -z "$storageAccountName" ]; then
+        echo "Deployment outputs not found, discovering resources by type..."
+    fi
+    if [ -z "$aiFoundryProjectName" ]; then
+        echo "AI Foundry Project Name not found in deployment outputs, attempting discovery..."
+    fi
+    
+    storageAccountName=$(az storage account list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    searchServiceName=$(az search service list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    aiFoundryHubName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='AIServices'].name | [0]" -o tsv 2>/dev/null || echo "")
+    applicationInsightsName=$(az monitor app-insights component show --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    
+    # Try to discover AI Foundry project name using different methods
+    if [ -z "$aiFoundryProjectName" ] && [ -n "$aiFoundryHubName" ]; then
+        echo "Attempting to discover AI Foundry project name..."
+        
+        # Method 1: Try to list AI projects (if az ml extension is available)
+        aiFoundryProjectName=$(az ml workspace list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+        
+        # Method 2: If that fails, try to find resources with "project" or "aiproject" in the name
+        if [ -z "$aiFoundryProjectName" ]; then
+            aiFoundryProjectName=$(az resource list --resource-group $resourceGroupName --query "[?contains(name, 'project') || contains(name, 'aiproject')].name | [0]" -o tsv 2>/dev/null || echo "")
+        fi
+        
+        # Method 3: If still empty, construct from hub name pattern (common pattern: hub-name -> project-name)
+        if [ -z "$aiFoundryProjectName" ] && [[ "$aiFoundryHubName" =~ -aifoundry- ]]; then
+            # Replace "aifoundry" with "aiproject" in the hub name
+            aiFoundryProjectName=$(echo "$aiFoundryHubName" | sed 's/-aifoundry-/-aiproject-/')
+            echo "Constructed project name from hub pattern: $aiFoundryProjectName"
+        fi
+        
+        # Method 4: Last resort - ask user or use default pattern
+        if [ -z "$aiFoundryProjectName" ]; then
+            echo "Could not auto-discover AI Foundry project name."
+            echo "Available resources in resource group:"
+            az resource list --resource-group $resourceGroupName --query "[].{name:name, type:type}" -o table 2>/dev/null || echo "Failed to list resources"
+            echo ""
+            echo "Please enter the AI Foundry project name (or press Enter to skip):"
+            read userProjectName
+            if [ -n "$userProjectName" ]; then
+                aiFoundryProjectName="$userProjectName"
+            fi
+        fi
+        
+        if [ -n "$aiFoundryProjectName" ]; then
+            echo "Using AI Foundry project name: $aiFoundryProjectName"
+        fi
     fi
 fi
 

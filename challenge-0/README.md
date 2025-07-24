@@ -26,9 +26,9 @@ If the above button gives a CORS error, follow these steps:
 5. **Configure**: Select subscription, resource group, and region
 6. **Deploy**: Click "Review + create" then "Create"
 
-**NOTE:** Deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
+**NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
-Resource deployment can take up to 5 minutes. Once the deployment is complete, you will see the resources in your Azure portal.
+Resource deployment can take up to 30 minutes due to one of the resources Don't worry, adter 2/3 minutes you'll be able to find most of the resources on your resource-group
 
 In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
 
@@ -46,12 +46,18 @@ Please select your forked repository from the dropdown and, if necessary, adjust
 
 ## 1.4 Verify the creation of your resources
 
-Go back to your `Azure Portal` and find your `Resource Group`that should by now contain 9 resources and look like this:
+Go back to your `Azure Portal` and find your `Resource Group`that should by now contain 10 resources and look like this:
 
 ![alt text](image.png)
 
 ## 1.5 Let's retrieve the necessary keys
-After deploying the resources, you will need to configure the environment variables in the `.env` file. The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created running the following command within the terminal in your Codespace:
+After deploying the resources, you will need to configure the environment variables in the `.env` file. Before anything else, let's log in into the CLI with our account.
+
+```bash
+az login --use-device-code
+```
+
+The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created running the following command within the terminal in your Codespace:
 
 ```bash
 cd challenge-0 && ./get-keys.sh --resource-group <resource-group-name>

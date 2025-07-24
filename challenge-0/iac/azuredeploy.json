@@ -393,6 +393,10 @@
       "type": "string",
       "value": "[format('https://ml.azure.com/home?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')))]"
     },
+    "aiFoundryProjectName": {
+    "type": "string",
+    "value": "[variables('aiProjectName')]"
+    },
     "aiFoundryProjectEndpoint": {
       "type": "string",
       "value": "[format('https://ai.azure.com/build/overview?wsid={0}', resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')))]"
