@@ -84,7 +84,7 @@ resource documentIntelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' 
 
 var searchServiceName = '${prefix}-search-${suffix}'
 
-resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
+resource searchService 'Microsoft.Search/searchServices@2025-02-01-preview' = {
   name: searchServiceName
   location: location
   sku: {
@@ -152,7 +152,7 @@ var keyVaultName = '${prefix}kv${suffix}'  // Shortened to fit 24 char limit
 var applicationInsightsName = '${prefix}-appinsights-${suffix}'
 
 // Application Insights
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02-preview' = {
   name: applicationInsightsName
   location: location
   kind: 'web'
@@ -264,14 +264,14 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-pre
 */
 resource gpt4MiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
   parent: aiFoundry
-  name: 'gpt-4o-mini'
+  name: '4.1-mini'
   sku : {
     capacity: 500
     name: 'GlobalStandard'
   }
   properties: {
     model:{
-      name: 'gpt-4o-mini'
+      name: '4.1-mini'
       format: 'OpenAI'
     }
   }
@@ -343,7 +343,7 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
   parent: aiFoundry
   properties: {
     category: 'CognitiveSearch'
-    target: 'https://${searchService.name}.search.windows.net/'
+    target: searchService.properties.endpoint
     authType: 'ApiKey' // Supported auth types: ApiKey, AAD
     isSharedToAll: true
     credentials: { 
@@ -355,6 +355,35 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
       location: searchService.location
     }
   }
+  dependsOn: [
+    aiFoundrySearchRoleAssignment
+    projectSearchRoleAssignment
+  ]
+}
+
+/*
+  Create connection between AI Foundry and Application Insights
+*/
+resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+  name: '${aiFoundryName}-appinsights'
+  parent: aiFoundry
+  properties: {
+    category: 'ApplicationInsights'
+    target: applicationInsights.properties.ConnectionString
+    authType: 'Key' // Supported auth types: Key, AAD
+    isSharedToAll: true
+    credentials: { 
+      key: applicationInsights.properties.InstrumentationKey
+    }
+    metadata: {
+      ResourceId: applicationInsights.id
+      location: applicationInsights.location
+    }
+  }
+  dependsOn: [
+    applicationInsights
+    aiFoundry
+  ]
 }
 
 
