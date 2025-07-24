@@ -344,9 +344,7 @@
       },
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
-        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]",
-        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId')))]",
-        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId')))]"
+        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
       ]
     },
     {
