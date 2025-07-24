@@ -365,16 +365,19 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
 /*
   Create connection between AI Foundry and Application Insights
 */
+/*
+  Create connection between AI Foundry and Application Insights (Alternative)
+*/
 resource appInsightsConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
   name: '${aiFoundryName}-appinsights'
   parent: aiFoundry
   properties: {
     category: 'ApplicationInsights'
     target: applicationInsights.properties.ConnectionString
-    authType: 'ApiKey' // Supported auth types: Key, AAD
+    authType: 'ConnectionString'
     isSharedToAll: true
-    credentials: { 
-      key: applicationInsights.properties.InstrumentationKey
+    credentials: {
+      connectionString: applicationInsights.properties.ConnectionString
     }
     metadata: {
       ResourceId: applicationInsights.id
