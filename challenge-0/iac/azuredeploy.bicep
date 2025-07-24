@@ -264,14 +264,14 @@ resource aiProject 'Microsoft.CognitiveServices/accounts/projects@2025-04-01-pre
 */
 resource gpt4MiniDeployment 'Microsoft.CognitiveServices/accounts/deployments@2024-10-01'= {
   parent: aiFoundry
-  name: '4.1-mini'
+  name: 'gpt-4.1-mini'
   sku : {
     capacity: 500
     name: 'GlobalStandard'
   }
   properties: {
     model:{
-      name: '4.1-mini'
+      name: 'gpt-4.1-mini'
       format: 'OpenAI'
     }
   }
