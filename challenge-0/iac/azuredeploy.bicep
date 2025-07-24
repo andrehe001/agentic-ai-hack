@@ -79,12 +79,11 @@ resource documentIntelligence 'Microsoft.CognitiveServices/accounts@2023-05-01' 
 
 
 /*
-  Create Azure AI Search
+  Create Azure AI Search 
 */
-
 var searchServiceName = '${prefix}-search-${suffix}'
 
-resource searchService 'Microsoft.Search/searchServices@2025-02-01-preview' = {
+resource searchService 'Microsoft.Search/searchServices@2023-11-01' = {
   name: searchServiceName
   location: location
   sku: {
@@ -96,6 +95,7 @@ resource searchService 'Microsoft.Search/searchServices@2025-02-01-preview' = {
     partitionCount: 1
   }
 }
+
 
 /*
   Create Azure API Management
@@ -336,18 +336,18 @@ resource projectSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@20
 }
 
 /*
-  Create connection between AI Foundry and AI Search
+  Create connection between AI Foundry and AI Search with API Key
 */
-resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025-04-01-preview' = {
+resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2024-10-01' = {
   name: '${aiFoundryName}-aisearch'
   parent: aiFoundry
   properties: {
     category: 'CognitiveSearch'
-    target: searchService.properties.endpoint
-    authType: 'ApiKey' // Supported auth types: ApiKey, AAD
+    target: 'https://${searchServiceName}.search.windows.net'
+    authType: 'ApiKey'
     isSharedToAll: true
-    credentials: { 
-      key: searchService.listAdminKeys().primaryKey
+    credentials: {
+      key: listAdminKeys(searchService.id, searchService.apiVersion).primaryKey
     }
     metadata: {
       ApiType: 'Azure'
@@ -358,6 +358,7 @@ resource searchConnection 'Microsoft.CognitiveServices/accounts/connections@2025
   dependsOn: [
     aiFoundrySearchRoleAssignment
     projectSearchRoleAssignment
+    searchService
   ]
 }
 

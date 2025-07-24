@@ -295,33 +295,47 @@
       ]
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2022-04-01",
-      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId'))]",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
+      "type": "Microsoft.CognitiveServices/accounts/connections",
+      "apiVersion": "2024-10-01",
+      "name": "[format('{0}/{1}-aisearch', variables('aiFoundryName'), variables('aiFoundryName'))]",
       "properties": {
-        "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
-        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), '2025-04-01-preview', 'full').identity.principalId]",
-        "principalType": "ServicePrincipal"
+        "category": "CognitiveSearch",
+        "target": "[format('https://{0}.search.windows.net', variables('searchServiceName'))]",
+        "authType": "AAD",
+        "isSharedToAll": true,
+        "metadata": {
+          "ApiType": "Azure",
+          "ResourceId": "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]",
+          "location": "[parameters('location')]"
+        }
       },
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
-        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId')))]",
+        "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId')))]"
       ]
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2022-04-01",
-      "name": "[guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId'))]",
-      "scope": "[format('Microsoft.Search/searchServices/{0}', variables('searchServiceName'))]",
+      "type": "Microsoft.CognitiveServices/accounts/connections",
+      "apiVersion": "2024-10-01",
+      "name": "[format('{0}/{1}-appinsights', variables('aiFoundryName'), variables('aiFoundryName'))]",
       "properties": {
-        "roleDefinitionId": "[variables('searchServiceContributorRoleId')]",
-        "principalId": "[reference(resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), '2025-04-01-preview', 'full').identity.principalId]",
-        "principalType": "ServicePrincipal"
+        "category": "ApplicationInsights",
+        "target": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString]",
+        "authType": "Key",
+        "isSharedToAll": true,
+        "credentials": {
+          "key": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]"
+        },
+        "metadata": {
+          "ResourceId": "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+          "location": "[parameters('location')]"
+        }
       },
       "dependsOn": [
-        "[resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName'))]",
-        "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
       ]
     }
   ],
