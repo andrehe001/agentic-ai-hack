@@ -345,7 +345,7 @@
         "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), variables('searchServiceContributorRoleId')))]",
         "[resourceId('Microsoft.Authorization/roleAssignments', guid(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), resourceId('Microsoft.CognitiveServices/accounts/projects', variables('aiFoundryName'), variables('aiProjectName')), variables('searchServiceContributorRoleId')))]"
       ]
-    }
+    },
     {
       "type": "Microsoft.CognitiveServices/accounts/connections",
       "apiVersion": "2024-10-01",
