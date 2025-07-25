@@ -198,3 +198,5 @@ cython_debug/
 azure_search_integration_summary.json
 processed_documents_for_vectorization.json
 processing_summary_gpt4o.json
+simplified_crash_reports.json
+structured_crash_reports.json
