@@ -56,6 +56,8 @@ searchServiceEndpoint=$(az deployment group show --resource-group $resourceGroup
 aiFoundryHubEndpoint=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryHubEndpoint.value" -o tsv 2>/dev/null || echo "")
 aiFoundryProjectEndpoint=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryProjectEndpoint.value" -o tsv 2>/dev/null || echo "")
 
+
+
 # If deployment outputs are empty, try to discover resources by type
 if [ -z "$storageAccountName" ]; then
     echo "Deployment outputs not found, discovering resources by type..."
@@ -63,6 +65,19 @@ if [ -z "$storageAccountName" ]; then
     searchServiceName=$(az search service list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
     aiFoundryHubName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='AIServices'].name | [0]" -o tsv 2>/dev/null || echo "")
     applicationInsightsName=$(az monitor app-insights component show --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+fi
+
+echo "Getting Cosmos DB service information..."
+cosmosDbAccountName=$(az cosmosdb list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+if [ -n "$cosmosDbAccountName" ]; then
+    cosmosDbEndpoint=$(az cosmosdb show --name $cosmosDbAccountName --resource-group $resourceGroupName --query documentEndpoint -o tsv 2>/dev/null || echo "")
+    cosmosDbKey=$(az cosmosdb keys list --name $cosmosDbAccountName --resource-group $resourceGroupName --query primaryMasterKey -o tsv 2>/dev/null || echo "")
+    cosmosDbConnectionString=$(az cosmosdb keys list --name $cosmosDbAccountName --resource-group $resourceGroupName --query primaryConnectionString -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: No Cosmos DB account found in resource group. You may need to deploy one."
+    cosmosDbEndpoint=""
+    cosmosDbKey=""
+    cosmosDbConnectionString=""
 fi
 
 # Get the keys from the resources
@@ -246,6 +261,10 @@ echo "CONTAINER_REGISTRY_NAME=\"$containerRegistryName\"" >> ../.env
 echo "APPLICATION_INSIGHTS_NAME=\"$applicationInsightsName\"" >> ../.env
 echo "APPLICATION_INSIGHTS_INSTRUMENTATION_KEY=\"$appInsightsInstrumentationKey\"" >> ../.env
 echo "AZURE_AI_CONNECTION_ID=\"$azureAIConnectionId\"" >> ../.env
+# Azure Cosmos DB
+echo "COSMOS_ENDPOINT=\"$cosmosDbEndpoint\"" >> ../.env
+echo "COSMOS_KEY=\"$cosmosDbKey\"" >> ../.env
+echo "COSMOS_CONNECTION_STRING=\"$cosmosDbConnectionString\"" >> ../.env
 
 # For backward compatibility, also set OpenAI-style variables pointing to AI Foundry
 echo "AZURE_OPENAI_SERVICE_NAME=\"$aiFoundryHubName\"" >> ../.env

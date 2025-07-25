@@ -1,5 +1,6 @@
 
 Policyholder Information:
+Claimant_ID:001
 
 Name: John Peterson
 

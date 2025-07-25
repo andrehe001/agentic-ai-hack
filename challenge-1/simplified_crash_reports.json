@@ -1,0 +1,187 @@
+[
+  {
+    "claim_id": "CL001",
+    "structured_claim_info": {
+      "claimant_id": "001",
+      "policyholder_name": "John Peterson",
+      "policyholder_address": "1142 Pinecrest Avenue, Springfield, OH 45503",
+      "policyholder_phone": "(937) 555-2319",
+      "policyholder_email": "john.peterson@email.com",
+      "policy_number": "314579824",
+      "vehicle_year_make_model": "2004 Honda Accord",
+      "vehicle_color": "Silver",
+      "vehicle_vin": "1HGCM56404A123456",
+      "vehicle_license_plate": "OH - GHR1984",
+      "incident_date": "July 17, 2025",
+      "incident_time": "8:30 AM",
+      "incident_location": "Parking lot, 2325 Main Street, Springfield, OH 45503",
+      "incident_description": "On the morning of July 17, 2025, my vehicle was legally parked in a marked parking space at 2325 Main Street, Springfield. At approximately 8:30 AM, while I was inside a nearby store, I was notified by a witness that a gray pickup truck attempting to park beside my car struck the front end and driver’s side of my vehicle. The other car’s driver failed to properly judge the distance and collided with my vehicle, causing significant damage. The other driver left their information and waited for police to arrive.",
+      "damage_description": "Front bumper dislodged and partially detached; Severe denting and scraping on the driver’s side front quarter panel; Wheel and tire on driver’s side front damaged; Paint transfer and deformity on the driver’s door; Headlamp assembly and grille potentially damaged; Possible hidden damage to mechanical components behind the bumper",
+      "witness_name": "Melissa Grant",
+      "witness_phone": "(937) 555-8741",
+      "police_department": "Springfield Police Dept.",
+      "police_report_number": "25-52814",
+      "repair_shop_name": "Springfield Auto Body",
+      "repair_shop_address": "1124 River Road, Springfield, OH 45503",
+      "attachments": "Photos of vehicle damage; Police report (PDF); Estimate from repair shop",
+      "claim_request": "Please advise regarding the next steps for vehicle assessment and repairs. I am requesting full coverage of the repair expenses minus my deductible.",
+      "signature_name": "John Peterson",
+      "signature_date": "July 20, 2025",
+      "additional_crashes": [
+        {
+          "crash_number": "crash4",
+          "structured_data": {
+            "claimant_id": "CL001",
+            "policyholder_name": "John Peterson",
+            "policyholder_address": "1142 Pinecrest Avenue, Springfield, OH 45503",
+            "policyholder_phone": "(937) 555-2319",
+            "policyholder_email": "andreabennett@email.com",
+            "policy_number": "0782916430",
+            "vehicle_year_make_model": "2011 Subaru Outback",
+            "vehicle_color": "Red",
+            "vehicle_vin": "4S4BRBCC2B3378210",
+            "vehicle_license_plate": "OH – CRV4413",
+            "incident_date": "July 19, 2025",
+            "incident_time": "11:15 AM",
+            "incident_location": "6400 Westbrook Road, Dayton, OH 45415",
+            "incident_description": "On July 19, 2025, at approximately 11:15 AM, I was driving my 2011 Subaru Outback westbound on Westbrook Road in Dayton, Ohio. While waiting in line with traffic for a stop sign, my vehicle was rear-ended by a blue sedan at moderate speed. The impact pushed my vehicle into the adjacent lane and forced my front end into the left lane’s shoulder. The other driver remained at the scene and promptly called local authorities. A police report was filed.",
+            "damage_description": "Severe crumpling and structural damage to the rear bumper and rear quarter panel; Rear driver’s side taillight broken and assembly displaced; Rear hatch door bent and misaligned, unable to close properly; Noticeable damage and scraping to the rear fender and left rear wheel well; Suspension may be compromised; rear wheel does not track properly; Minor paint scrapes and denting along the driver’s side; Trunk contents disturbed, possible interior damage",
+            "witness_name": "Taylor Simmons",
+            "witness_phone": "(937) 555-7893",
+            "police_department": "Montgomery County Sheriff’s Office",
+            "police_report_number": "25-22097",
+            "repair_shop_name": "Dayton Collision & Auto Repair",
+            "repair_shop_address": "1276 Whitestone Ave, Dayton, OH 45415",
+            "attachments": "Digital photographs of rear and left-side damage; Montgomery County police report (copy); Tow and repair estimate receipts; Written witness statement",
+            "claim_request": "I am submitting this claim to request assessment and coverage for all rear-end bodywork and mechanical repairs, as well as reimbursement for towing costs. Please advise on next steps for inspection and claims processing.",
+            "signature_name": "Andrea M. Bennett",
+            "signature_date": "July 20, 2025"
+          }
+        }
+      ]
+    },
+    "image_descriptions": [
+      {
+        "crash_number": "crash1",
+        "image_file": "crash1.jpg",
+        "description": "The image depicts a silver four-door sedan parked in a marked parking space on an asphalt surface. The vehicle has sustained significant damage primarily to the front left section. Notable damage includes:\n\n- The front left fender is heavily dented and crumpled.\n- The front bumper is detached and hanging off, exposing internal components such as the radiator and structural supports.\n- The left front wheel is a spare tire (donut) and appears misaligned, indicating possible suspension or axle damage.\n- The left headlight assembly is missing or destroyed.\n- The hood is slightly misaligned near the damaged area, suggesting impact force.\n\nThe rest of the vehicle, including the passenger cabin and rear, appears intact with no visible damage. The windows are clear and unbroken.\n\nEnvironmental context:\n- The car is parked in an outdoor lot adjacent to a grassy area and a sidewalk.\n- The weather appears clear with no signs of rain or adverse conditions.\n- There are no other vehicles or people immediately nearby.\n- The parking lot surface is dry and clean, with no visible debris or fluids around the damaged vehicle.\n\nSeverity assessment:\n- The damage to the front left corner is extensive, affecting body panels, lighting, and likely mechanical components such as the suspension and steering.\n- The vehicle is not in a drivable condition due to the missing bumper, damaged wheel, and exposed internal parts.\n- Repair costs are expected to be significant, potentially involving bodywork, mechanical repairs, and replacement of parts.\n\nSafety concerns:\n- The exposed front end poses a risk of sharp edges or loose parts.\n- The misaligned wheel suggests compromised vehicle control if driven.\n- The vehicle should be towed to a repair facility to prevent further damage or hazards.\n\nThis detailed damage and environmental assessment should assist in insurance claim evaluation and repair planning."
+      },
+      {
+        "crash_number": "crash4",
+        "image_file": "crash4.jpeg",
+        "description": "The image depicts a two-vehicle collision on a paved road with clear weather conditions and dry pavement. The vehicles involved are a red station wagon and a blue compact sedan.\n\nDamage Assessment:\n- The red station wagon has significant rear-side damage on the left rear quarter panel. The metal is heavily dented and crumpled, particularly around the wheel arch and rear door area. The rear bumper appears to be pushed inward, and the rear left tire is partially obscured but seems intact.\n- The blue compact sedan has front-end damage concentrated on the left side. The hood is crumpled and bent upwards, indicating a strong impact. The front left headlight is damaged but still in place. The front bumper is misaligned and partially detached. The front left fender is also dented.\n\nEnvironmental Factors:\n- The accident occurred on a two-lane road with a solid white line marking the edge of the lane.\n- The road surface is dry and in good condition, with no visible debris other than small fragments from the collision near the vehicles.\n- The surrounding area includes dense green foliage and trees, suggesting a suburban or rural setting.\n- Weather is clear with partly cloudy skies, indicating good visibility at the time of the incident.\n\nAdditional Details:\n- The blue sedan's driver's door is open, and a person wearing an orange safety vest is attending to the driver or inspecting the vehicle.\n- Another individual is partially visible inside the blue car.\n- There are no visible injuries or emergency vehicles present in the image.\n- The positioning of the vehicles suggests the blue sedan rear-ended the red station wagon, causing the rear-side damage to the wagon and front-end damage to the sedan.\n\nSeverity Assessment:\n- The damage to both vehicles is moderate. The red station wagon has structural damage to the rear quarter panel, which may affect the vehicle's frame and rear suspension.\n- The blue sedan has significant front-end damage that likely affects the engine compartment and front structural components.\n- Both vehicles appear to be immobilized on the roadway, indicating the collision was forceful enough to prevent immediate driving.\n\nSafety Concerns:\n- The vehicles are partially obstructing the lane, posing a hazard to oncoming traffic.\n- The presence of individuals outside the vehicles on the road shoulder requires caution to prevent secondary accidents.\n- No visible fire, fluid leaks, or other immediate hazards are apparent in the image.\n\nThis detailed description should assist in the insurance claim evaluation and risk assessment process."
+      }
+    ]
+  },
+  {
+    "claim_id": "CL002",
+    "structured_claim_info": {
+      "claimant_id": "002",
+      "policyholder_name": "Samantha Turner",
+      "policyholder_address": "507 Walnut Lane, Albany, NY 12208",
+      "policyholder_phone": "(518) 555-2913",
+      "policyholder_email": "samantha.turner@email.com",
+      "policy_number": "4421983201",
+      "vehicle_year_make_model": "2017 Honda Civic Hatchback",
+      "vehicle_color": "Blue-Gray",
+      "vehicle_vin": "19XFC2F5XHE200487",
+      "vehicle_license_plate": "NY – FZX1452",
+      "incident_date": "July 18, 2025",
+      "incident_time": "4:10 PM",
+      "incident_location": "2100 Madison Avenue, Albany, NY 12208",
+      "incident_description": "On July 18, 2025, at approximately 4:10 PM, I was driving eastbound on Madison Avenue in Albany, New York. While proceeding through a green light at the intersection with Parkwood Street, another vehicle traveling southbound failed to stop at a red signal and struck my vehicle hard on the driver’s side. My car spun partially as a result of the impact before coming to a stop near the curb.",
+      "damage_description": "Heavy intrusion and bending on the driver’s front and rear doors. B-pillar area severely compromised. Rear wheel misaligned, not functional for safe driving. Shattered rear driver’s side window. Scraping and paint transfer along both driver’s side doors and lower panels. Deployment of side airbags. Possible interior damage to armrests and door controls. Vehicle towed from accident location.",
+      "witness_name": "Brian Hughes",
+      "witness_phone": "(518) 555-9248",
+      "police_department": "Albany Police Department",
+      "police_report_number": "25-13982",
+      "repair_shop_name": "Empire Collision Repair",
+      "repair_shop_address": "1892 Western Ave, Albany, NY 12203",
+      "attachments": "Photos of driver’s side collision and impact; Towing and repair shop receipt; Albany PD accident report; Witness statement",
+      "claim_request": "I am filing this claim to request assessment and full coverage for the extensive body and structural repairs needed. Please advise regarding next steps for inspection and completion of repairs.",
+      "signature_name": "Samantha Turner",
+      "signature_date": "July 20, 2025"
+    },
+    "image_descriptions": [
+      {
+        "crash_number": "crash2",
+        "image_file": "crash2.jpg",
+        "description": "The image depicts a light blue hatchback vehicle, specifically a Honda Civic, positioned indoors in a controlled environment, likely a crash test facility. The vehicle has sustained significant damage primarily to the driver's side, indicating a side-impact collision test.\n\nDamage Assessment:\n- The driver's side doors (both front and rear) exhibit extensive deformation, with large dents and crumpling visible.\n- The side airbags appear to have deployed, as indicated by the white fabric visible through the front window.\n- The front driver's side wheel is turned outward, and the front fender shows signs of impact damage.\n- The rear driver's side wheel is slightly misaligned, and the lower side panel beneath the doors is bent.\n- The rear of the vehicle, including the bumper and tail lights, remains intact with no visible damage.\n- The vehicle has markings and labels from Thatcham Research and Euro NCAP, confirming this is a crash test scenario.\n\nEnvironmental Factors:\n- The vehicle is indoors on a clean, smooth concrete floor with no weather or road hazards present.\n- The controlled environment suggests this is a standardized test to assess vehicle safety performance in side-impact collisions.\n\nRelevant Details for Insurance Processing:\n- The damage is severe on the driver's side, affecting structural components such as the doors and side panels.\n- Airbag deployment indicates a significant impact force, which may result in costly repairs or total loss determination.\n- No other vehicles or external objects are involved in this image, confirming the damage is from a controlled test rather than an actual accident scene.\n- The controlled setting eliminates environmental variables like weather or road conditions from the damage assessment.\n\nOverall, the vehicle has sustained major side-impact damage with structural deformation and airbag deployment. The damage severity is high, and repair costs would likely be substantial. This image is useful for understanding the crashworthiness of the vehicle rather than documenting a real-world insurance claim accident."
+      }
+    ]
+  },
+  {
+    "claim_id": "CL003",
+    "structured_claim_info": {
+      "claimant_id": "CL003",
+      "policyholder_name": "Michael Rodriguez",
+      "policyholder_address": "217 Maplewood Avenue, Harrisburg, PA 17102",
+      "policyholder_phone": "(717) 555-7745",
+      "policyholder_email": "michael.rodriguez@email.com",
+      "policy_number": "5931784520",
+      "vehicle_year_make_model": "2012 Suzuki SX4",
+      "vehicle_color": "White",
+      "vehicle_vin": "JS2YB5A31C6109734",
+      "vehicle_license_plate": "PA – KLX2194",
+      "incident_date": "July 19, 2025",
+      "incident_time": "6:30 PM",
+      "incident_location": "400 East 8th Street, Harrisburg, PA 17102",
+      "incident_description": "While operating his 2012 Suzuki SX4 eastbound on East 8th Street, claimant slowed to make a left turn into a residential driveway. Another vehicle traveling at excessive speed attempted to overtake on the left and collided forcefully with the rear driver’s side quarter panel, causing the car to spin and strike a curb, damaging the front bumper and left front wheel.",
+      "damage_description": "Major denting and scraping to the rear driver’s side quarter panel and bumper; damage to rear wheel arch; front bumper heavily crumpled and partially detached; left front wheel and suspension suspected damaged; minor scraping to front left headlight housing; vehicle not drivable and towed for repair assessment.",
+      "witness_name": "Richard Talbot",
+      "witness_phone": "(717) 555-9132",
+      "police_department": "Harrisburg Police Department",
+      "police_report_number": "2025-41134",
+      "repair_shop_name": "Capital City Auto Collision",
+      "repair_shop_address": "315 Reily Street, Harrisburg, PA 17102",
+      "attachments": "Digital photographs of all visible damage; Harrisburg PD police report (scanned copy); Written witness statement; Tow truck receipt; Initial repair shop damage estimate",
+      "claim_request": "Requesting full assessment and coverage for body and mechanical repairs, and reimbursement for towing costs. Seeks guidance on next steps regarding inspection or claims processing.",
+      "signature_name": "Michael Rodriguez",
+      "signature_date": "July 20, 2025"
+    },
+    "image_descriptions": [
+      {
+        "crash_number": "crash3",
+        "image_file": "crash3.jpg",
+        "description": "The image depicts a white compact hatchback vehicle with significant damage to both the front and rear sections, indicative of a severe collision.\n\nDamage Assessment:\n- Front: The hood is heavily crumpled and bent upwards, suggesting a strong frontal impact. The front grille is damaged, and the left headlight is misaligned but appears intact. The front bumper shows signs of deformation.\n- Rear: The rear quarter panel on the driver's side is extensively crushed and dented, with visible deformation extending from the rear door to the back of the vehicle. The rear bumper and tail light on the same side are severely damaged or missing. The rear wheel on the driver's side appears to be intact but may have alignment issues due to the surrounding structural damage.\n- Side: The driver's side door has minor dents but remains closed, indicating the impact was more concentrated at the front and rear ends.\n\nEnvironmental Factors:\n- The vehicle is parked on a paved surface, likely a roadside or parking area adjacent to a chain-link fence and a grassy strip.\n- The background shows a residential or suburban area with greenery and buildings.\n- Weather conditions appear clear and dry, with no visible signs of rain or adverse weather affecting the scene.\n\nAdditional Details:\n- There are no visible occupants or pedestrians near the vehicle.\n- No other vehicles are immediately adjacent to the damaged car, suggesting it may have been moved post-accident or the collision involved a stationary object or a single-vehicle incident.\n- The vehicle's windows are tinted and intact, with no visible cracks or shattering.\n\nSeverity and Safety Concerns:\n- The extent of front and rear damage suggests the vehicle has sustained structural compromise, likely affecting the frame and safety systems.\n- The damage severity indicates the vehicle may be a total loss or require extensive repairs.\n- There is no visible fluid leakage or fire hazard in the image, but the structural damage warrants a thorough mechanical and safety inspection before any further use.\n\nThis detailed assessment should assist in insurance claim processing by highlighting the critical damage areas, environmental context, and potential safety risks associated with the vehicle."
+      }
+    ]
+  },
+  {
+    "claim_id": "CL004",
+    "structured_claim_info": {
+      "claimant_id": "CL004",
+      "policyholder_name": "Christopher J. Ryan",
+      "policyholder_address": "338 Willow Crest Drive, Columbus, OH 43214",
+      "policyholder_phone": "(614) 555-3791",
+      "policyholder_email": "chrisjryan@email.com",
+      "policy_number": "1283947502",
+      "vehicle_year_make_model": "2016 Toyota Corolla",
+      "vehicle_color": "Black",
+      "vehicle_vin": "2T1BURHE1GC123905",
+      "vehicle_license_plate": "OH – TLY3829",
+      "incident_date": "July 19, 2025",
+      "incident_time": "2:50 PM",
+      "incident_location": "Intersection of Karl Road & Bethel Road, Columbus, OH 43214",
+      "incident_description": "At approximately 2:50 PM, while driving eastbound on Bethel Road, a gray pickup truck traveling northbound failed to yield while making a left turn and struck the rear driver’s side of my vehicle, causing it to spin and sustain damage.",
+      "damage_description": "Severe crumpling and denting of the left rear quarter panel and bumper; Rear driver’s side taillight shattered; Rear door and trunk slightly misaligned with affected trunk latch; Rear wheel on driver’s side bent with suspected axle damage; Scrapes and paint transfer along left side; Possible undercarriage and suspension issues; Vehicle not safe to drive and towed from scene.",
+      "witness_name": "Samuel Lewis",
+      "witness_phone": "(614) 555-7362",
+      "police_department": "Columbus Police Department",
+      "police_report_number": "25-33109",
+      "repair_shop_name": "Northfield Auto Body",
+      "repair_shop_address": "992 Northfield Drive, Columbus, OH 43214",
+      "attachments": "Digital photographs of left rear and side damage; Columbus PD police report (copy); Towing receipt and initial repair estimate; Written witness account",
+      "claim_request": "Request full assessment and coverage for all necessary body, mechanical, and suspension repairs, as well as reimbursement for towing costs.",
+      "signature_name": "Christopher J. Ryan",
+      "signature_date": "July 20, 2025"
+    },
+    "image_descriptions": [
+      {
+        "crash_number": "crash5",
+        "image_file": "crash5.jpg",
+        "description": "The image depicts a collision between two vehicles on a paved multi-lane road, likely a highway or major thoroughfare, with a concrete barrier and dense green foliage in the background. \n\nVehicle Types and Damage:\n1. Silver Pickup Truck:\n- Front-end damage is extensive, primarily on the driver's side.\n- The front bumper is missing, exposing internal components such as the radiator and structural supports.\n- The left headlight is broken or missing.\n- The hood is crumpled and bent upwards, indicating a strong frontal impact.\n- The left front fender is severely dented and pushed inward.\n- The left front wheel appears misaligned or damaged, possibly affecting suspension.\n- No visible damage to the windshield or side windows.\n \n2. Black Sedan:\n- Rear-end damage is significant, focused on the left rear quarter panel.\n- The rear left taillight is broken.\n- The rear bumper is dented and partially detached.\n- The left rear door and quarter panel exhibit large dents and creases, indicating a side impact.\n- The rear windshield and other windows appear intact.\n- The trunk lid is slightly misaligned but closed.\n\nEnvironmental Factors:\n- The road surface is dry and clear, with no visible debris or skid marks.\n- Weather conditions appear favorable with daylight and no precipitation.\n- The concrete barrier suggests a controlled-access road, reducing pedestrian risk.\n- No other vehicles or pedestrians are visible in the immediate vicinity.\n\nSeverity Assessment:\n- Both vehicles sustained moderate to severe damage, with the pickup truck showing front-end structural damage and the sedan exhibiting rear and side damage.\n- The damage suggests a collision where the pickup truck struck the rear-left side of the sedan, possibly during a lane change or sudden stop.\n- The pickup's front-end damage may affect engine components and suspension, requiring extensive repairs.\n- The sedan's rear and side damage may compromise structural integrity and rear suspension.\n\nSafety Concerns:\n- No visible airbags deployed in either vehicle, though this cannot be confirmed from the image angle.\n- No occupants or emergency responders are visible, indicating the scene may be post-accident or before assistance arrived.\n- The vehicles remain on the roadway, partially obstructing lanes, which could pose a hazard to other traffic.\n- Immediate removal or marking of the vehicles is advisable to prevent secondary collisions.\n\nSummary:\nThis image shows a two-vehicle collision involving a silver pickup truck and a black sedan with moderate to severe damage to the front of the pickup and the rear-left side of the sedan. The incident occurred on a dry, clear roadway with no immediate hazards visible aside from the obstructed lanes. Both vehicles will likely require significant repairs, and the scene warrants prompt traffic management to ensure safety."
+      }
+    ]
+  }
+]
