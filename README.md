@@ -6,29 +6,30 @@ Welcome to the Multi-Agent Insurance Claims Processing using Azure AI Hackathon!
 
 ## Introduction
 
-As a participant, you will delve into cutting-edge multi-agent solutions that leverage Azure AI services to revolutionize insurance claims processing, reduce manual intervention, and accelerate the resolution of complex claim scenarios. By integrating advanced document intelligence, computer vision, and semantic search technologies, you will create intelligent agent systems that not only transform operational efficiency but also deliver exceptional customer experiences in the insurance industry.
+Get ready to transform the insurance industry! In this hackathon, you'll embark on an exciting journey from processing documents to orchestrating intelligent AI agents that revolutionize how insurance claims are handled. You're not just building code—you're architecting the future of automated insurance workflows.
 
-Through this hands-on experience, you'll master the art of orchestrating specialized AI agents - from policy checkers that understand coverage nuances to risk analysts that detect fraud patterns, and claim assessors that evaluate damage with precision. Your multi-agent ecosystem will seamlessly handle everything from motorcycle policies to commercial vehicle coverage, processing claims in multiple languages while maintaining accuracy and compliance.
+Your adventure begins with teaching machines to "see" and understand complex insurance documents, from handwritten claim forms to damage photos. Then you'll breathe life into your first AI agent, watching it learn to think, reason, and make decisions like an experienced insurance professional. But here's where it gets really exciting: you'll create an entire ecosystem of specialized AI agents—each with unique superpowers.
 
-Prepare to unleash your creativity and technical expertise as you embark on this transformative journey to architect the future of intelligent insurance claim processing with Azure AI!
+Picture this: A Policy Checker agent that instantly validates coverage with laser precision, a Claim Reviewer that analyzes submissions with detective-like attention to detail, and a Risk Analyzer that spots fraud patterns human eyes might miss. The magic happens when these agents start collaborating, seamlessly passing work between each other, negotiating decisions, and solving complex claims that would typically take weeks to resolve.
+
+By the end of this hackathon, you'll have built a complete multi-agent orchestra conducting the symphony of modern insurance claim processing—and you'll never look at AI the same way again!
 
 
 ## Learning Objectives
 
 By participating in this hackathon, you will learn how to:
 
-- **Build Intelligent Document Processing Systems**: Master the integration of Azure Document Intelligence and Azure OpenAI GPT-4o to extract, analyze, and structure information from complex insurance documents including policies, claims, and visual damage assessments through advanced OCR and multimodal AI capabilities.
+- **Build Intelligent Document Processing Systems**: Master the integration of Azure Document Intelligence and Azure OpenAI GPT-4.1-mini to extract, analyze, and structure information from complex insurance documents including policies, claims, and visual damage assessments through advanced OCR and multimodal AI capabilities.
 
-- **Create Multi-Agent AI Architectures**: Develop sophisticated multi-agent systems where specialized AI agents collaborate seamlessly - including policy checkers that validate coverage terms, risk analysts that detect fraud patterns, and claim assessors that evaluate damage with precision using Azure AI Agent Service.
+- **Create and Test AI Agents**: Build your first intelligent agent using Azure AI Agent Service to handle insurance claim processing workflows, learning the fundamentals of agent development and testing.
 
-- **Implement Vectorized Search and Semantic Understanding**: Build advanced search capabilities using Azure AI Search with integrated vectorization, enabling semantic understanding of insurance policies and claims across multiple document types and languages for intelligent information retrieval.
+- **Implement Agent Observability and Evaluation**: Develop comprehensive evaluation frameworks using Azure AI Foundry's capabilities to systematically assess agent performance, implement continuous monitoring, and ensure quality, safety, and reliability standards.
 
-- **Orchestrate Agent Collaboration Workflows**: Design and implement supervisor patterns that coordinate multiple specialized agents, managing complex insurance claim processing workflows from initial document intake through final claim resolution with proper handoffs and decision-making logic.
+- **Build Specialized Multi-Agent Systems**: Create multiple specialized AI agents (Policy Checker, Claim Reviewer, Risk Analyser) using Semantic Kernel integration, each with enhanced capabilities for specific insurance processing tasks.
 
-- **Deploy Production-Ready AI Solutions**: Learn to scale your multi-agent systems for production environments on Azure, implementing best practices for security, monitoring, and performance optimization while handling real-world insurance scenarios including edge cases and multilingual support.
+- **Master Agent Orchestration Patterns**: Design and coordinate multiple specialized agents to work together through various orchestration patterns including sequential, concurrent, group chat, handoff, and managerial orchestration for complex insurance claim workflows.
 
 ## Architecture
-
 
 ## Requirements
 To successfully complete this hackathon, you will need the following:
@@ -46,14 +47,14 @@ To successfully complete this hackathon, you will need the following:
 2. Challenge 01: **[Document Processing and Vectorized Search](challenge-1/README.md)**
    - Build a comprehensive document processing system using multimodal analysis and Azure AI Search for semantic understanding
 
-3. Challenge 02: **[Multi-Agent Collaboration System](challenge-2/README.md)**
-   - Create specialized AI agents (Policy Checker, Risk Analyst, Claim Assessor) that collaborate to process insurance claims
+3. Challenge 02: **[Build and Test Your First Agent](challenge-2/README.md)**
+   - Create your first intelligent agent using Azure AI Agent Service to handle insurance claim processing workflows
 
-4. Challenge 03: **[Advanced Agent Orchestration](challenge-3/README.md)**
-   - Implement sophisticated agent coordination patterns and handle complex insurance scenarios
+4. Challenge 03: **[Agent Observability and Evaluation](challenge-3/README.md)**
+   - Implement comprehensive observability and evaluation frameworks for your AI agents using Azure AI Foundry's evaluation capabilities
 
-5. Challenge 04: **[Production Optimization & Edge Cases](challenge-4/readme.md)**
-   - Scale your multi-agent system and handle real-world edge cases for production readiness
+5. Challenge 04: **[Semantic Kernel + Azure AI Agent Service Agents](challenge-4/readme.md)**
+   - Create specialized AI agents (Policy Checker, Claim Reviewer, Risk Analyser) using Semantic Kernel integration for enhanced capabilities
 
-6. Challenge 05: **[Azure Deployment & CI/CD](challenge-5/readme.md)**
-   - Deploy your multi-agent solution to Azure with automated CI/CD pipelines for production environments
+6. Challenge 05: **[Agent Orchestration](challenge-5/readme.md)**
+   - Coordinate multiple specialized agents to work together on complex tasks through various orchestration patterns
