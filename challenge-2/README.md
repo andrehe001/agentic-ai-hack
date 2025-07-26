@@ -1,6 +1,6 @@
 # Challenge 2 - Build and test your first Agent
 
-**Expected Duration:** 120 minutes
+**Expected Duration:** 60 minutes
 
 ## Introduction
 
@@ -150,3 +150,17 @@ My 17-year-old son was driving my car when the accident happened. Are we still c
 So far, we have created the beggining of our agent using Azure AI Agent Service in the Portal. Now, **let's start coding!** Our Agent, as of now, is able to access our Azure AI Search, our Vector Database. This is, essentially, your first tool they can access.
 
 Please jump over to the `policy_checker.ipynb` file to complete this guide. 
+
+## 🎯 Conclusion
+
+You've successfully built your first Policy Checker Agent using Azure AI Agent Service! Your agent can now analyze insurance policies, validate claim coverage, and provide intelligent responses by accessing vectorized policy documents through Azure AI Search.
+
+**Key Achievements:**
+- Created a specialized insurance agent with domain-specific instructions
+- Integrated Azure AI Search for knowledge-based responses
+- Implemented search capabilities for accurate, context-aware answers
+- Tested the agent with real-world insurance scenarios
+
+Your agent foundation is now ready for advanced capabilities in Challenge 3, where you'll add comprehensive monitoring and evaluation frameworks.
+
+---

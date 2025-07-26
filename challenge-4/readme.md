@@ -15,17 +15,19 @@ Each agent will be built using Azure AI Agent Service combined with Semantic Ker
 ## Why Semantic Kernel?
 Semantic Kernel serves as an excellent foundation for Azure AI Agent Service agents because it enables modular, scalable, and flexible development of specialized AI agents. With its robust plugin framework, Semantic Kernel efficiently manages complex agent capabilities by allowing seamless integration of diverse AI models and enterprise functions, while providing advanced capabilities out-of-the-box, such as prompt chaining, context management, and seamless API integration. The combination of Semantic Kernel's open-source flexibility and Azure's enterprise-grade AI services empowers developers to construct sophisticated, reliable, and easily maintained AI solutions.
 
-## Part 1 - Create your Claim Reviewer Agent
+## Exercise Guide - Create your Agents!
+
+### Part 1 - Create your Claim Reviewer Agent
 
 Time to build our second agent! Please jump over to `claim_reviewer.ipynb` file for a demonstration on how to create an Azure AI Agent using a Custom Plugin from Semantic Kernel. Please make sure to carefully check all the cells, as they have interesting integrations.
 
-## Part 2 - Create your Risk Analyser Agent
+### Part 2 - Create your Risk Analyser Agent
 
 Time to build our third agent! Please jump over to `risk_analyser.ipynb` file for a demonstration on how to create an Azure AI Agent using a Custom Plugin from Semantic Kernel.
 
 Great! If you are finished, and you are ready to take on an extra challenge, I have good news for you: there's so much more to expand! 
 
-## Part 3 - Use your Memory! (Optional)
+### Part 3 - Use your Memory! (Optional)
 Part of this code-first experience is the fact that we are indeed writing code. Within your environment you have access to **Github Copilot for free**! 
 
 GitHub Copilot accelerates AI agent development by providing intelligent code suggestions and completions, making it easier to implement complex agent capabilities and semantic kernel integrations.
@@ -74,3 +76,5 @@ This solution demonstrates the power of combining Azure AI Agent Service's enter
 Now that you have built individual specialized agents, you're ready for the next level: **Agent Orchestration**! In Challenge 5, you'll learn how to coordinate these multiple agents to work together on complex tasks that require collaboration between different specializations. 
 
 You'll discover orchestration patterns like Sequential, Concurrent, and Group Chat orchestration, and implement a sophisticated multi-agent system where your Policy Checker, Claim Reviewer, and Risk Analyser agents collaborate seamlessly to process insurance claims end-to-end. This is where the real power of multi-agent systems comes alive!
+
+---
