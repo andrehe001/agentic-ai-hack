@@ -1,5 +1,3 @@
-![Design 12 (4)](https://github.com/user-attachments/assets/5ee37af8-bf8a-41ec-a4f9-9b8afb903b6c)
-
 # Unlocking Multi-Agent Capabilities with Azure AI Services
 
 Welcome to the Multi-Agent Insurance Claims Processing using Azure AI Hackathon! Today, you're set to dive into the revolutionary world of intelligent agent systems, with a focus on harnessing the transformative power of Azure AI services for complex insurance workflows. Prepare yourself for an intensive day of learning, innovation, and hands-on experience that will elevate your understanding of multi-agent AI systems and their real-world applications in insurance claim processing.

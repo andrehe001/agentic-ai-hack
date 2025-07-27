@@ -64,7 +64,7 @@ if [ -z "$storageAccountName" ]; then
     storageAccountName=$(az storage account list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
     searchServiceName=$(az search service list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
     aiFoundryHubName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='AIServices'].name | [0]" -o tsv 2>/dev/null || echo "")
-    applicationInsightsName=$(az monitor app-insights component show --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    applicationInsightsName=$(az resource list --resource-group $resourceGroupName --resource-type "Microsoft.Insights/components" --query "[0].name" -o tsv 2>/dev/null || echo "")
 fi
 
 echo "Getting Cosmos DB service information..."
@@ -118,7 +118,7 @@ fi
 
 # Application Insights
 if [ -n "$applicationInsightsName" ]; then
-    appInsightsInstrumentationKey=$(az monitor app-insights component show --app $applicationInsightsName --resource-group $resourceGroupName --query instrumentationKey -o tsv 2>/dev/null || echo "")
+    appInsightsInstrumentationKey=$(az resource show --resource-group $resourceGroupName --name $applicationInsightsName --resource-type "Microsoft.Insights/components" --query properties.InstrumentationKey -o tsv 2>/dev/null || echo "")
 else
     echo "Warning: Application Insights not found"
     appInsightsInstrumentationKey=""
@@ -141,18 +141,10 @@ fi
 # Add this section after getting the search service information (around line 100)
 
 # Get Azure AI Search connection ID
-if [ -n "$aiFoundryHubName" ] && [ -n "$searchServiceName" ]; then
-    echo "Getting Azure AI Search connection ID..."
-    azureAIConnectionId=$(az cognitiveservices account connection list --account-name $aiFoundryHubName --resource-group $resourceGroupName --query "[?contains(name, 'aisearch')].name | [0]" -o tsv 2>/dev/null || echo "")
-    
-    # If no connection found by name pattern, try getting the first CognitiveSearch connection
-    if [ -z "$azureAIConnectionId" ]; then
-        azureAIConnectionId=$(az cognitiveservices account connection list --account-name $aiFoundryHubName --resource-group $resourceGroupName --query "[?properties.category=='CognitiveSearch'].name | [0]" -o tsv 2>/dev/null || echo "")
-    fi
-else
-    echo "Warning: Cannot get Azure AI connection ID - AI Foundry Hub or Search Service not found"
-    azureAIConnectionId=""
-fi
+# Note: The 'az cognitiveservices account connection' command is not available in all Azure CLI versions
+# We'll construct the connection ID manually later in the script
+echo "Skipping Azure AI Search connection query (will construct manually)..."
+azureAIConnectionId=""
 
 
 if [ -z "$storageAccountName" ] || [ -z "$aiFoundryProjectName" ]; then
@@ -166,7 +158,7 @@ if [ -z "$storageAccountName" ] || [ -z "$aiFoundryProjectName" ]; then
     storageAccountName=$(az storage account list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
     searchServiceName=$(az search service list --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
     aiFoundryHubName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='AIServices'].name | [0]" -o tsv 2>/dev/null || echo "")
-    applicationInsightsName=$(az monitor app-insights component show --resource-group $resourceGroupName --query "[0].name" -o tsv 2>/dev/null || echo "")
+    applicationInsightsName=$(az resource list --resource-group $resourceGroupName --resource-type "Microsoft.Insights/components" --query "[0].name" -o tsv 2>/dev/null || echo "")
 fi
 
 # Construct Azure AI Search connection ID directly
@@ -177,10 +169,9 @@ if [ -n "$aiFoundryHubName" ] && [ -n "$searchServiceName" ]; then
     subscriptionId=$(az account show --query id -o tsv 2>/dev/null || echo "")
     
     if [ -n "$subscriptionId" ]; then
-        # Construct the connection ID based on the pattern you provided
-        # Pattern: /subscriptions/{subscription}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{aiFoundryHub}/connections/{searchServiceWithoutDashes}
-        searchServiceNameNoDashes=$(echo "$searchServiceName" | sed 's/-//g')
-        azureAIConnectionId="/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/${aiFoundryHubName}/connections/${searchServiceNameNoDashes}"
+        # Construct the connection ID based on the pattern: aiFoundryHubName + "-aisearch"
+        # Pattern: /subscriptions/{subscription}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{aiFoundryHub}/connections/{aiFoundryHub}-aisearch
+        azureAIConnectionId="/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/${aiFoundryHubName}/connections/${aiFoundryHubName}-aisearch"
         echo "Constructed connection ID: $azureAIConnectionId"
     else
         echo "Warning: Could not get subscription ID"
@@ -257,6 +248,8 @@ echo "COSMOS_CONNECTION_STRING=\"$cosmosDbConnectionString\"" >> ../.env
 echo "AZURE_OPENAI_SERVICE_NAME=\"$aiFoundryHubName\"" >> ../.env
 echo "AZURE_OPENAI_ENDPOINT=\"$aiFoundryEndpoint\"" >> ../.env
 echo "AZURE_OPENAI_KEY=\"$aiFoundryKey\"" >> ../.env
+echo "AZURE_OPENAI_DEPLOYMENT_NAME=\"gpt-4.1-mini\"" >> ../.env
+echo "MODEL_DEPLOYMENT_NAME=\"gpt-4.1-mini\"" >> ../.env
 
 echo "Keys and properties are stored in '.env' file successfully."
 
