@@ -1,5 +1,7 @@
 # Challenge 4: Semantic Kernel + Azure AI Agent Service Agents: The Best of Both Worlds
 
+**Expected Duration:** 45 minutes
+
 ## Introduction
 By this point we have created **one agent** and have seen how to evaluate and observe that specific agent. As you know, our use case is a bit more complex and, therefore, we will now create additional specialized agents to handle different aspects of insurance claim processing. In this challenge, we'll focus on building individual agents with enhanced capabilities using Semantic Kernel integration.
 

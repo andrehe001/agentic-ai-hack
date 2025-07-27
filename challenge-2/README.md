@@ -1,6 +1,6 @@
 # Challenge 2 - Build and test your first Agent
 
-**Expected Duration:** 60 minutes
+**Expected Duration:** 30 minutes
 
 ## Introduction
 
@@ -21,16 +21,6 @@ Think of Azure AI Foundry as an assembly line for intelligent agents. Like any m
 
 In this Challenge 2, we will dedicate half of the time dedicating our time on: **Part 1) Customizability and Part 2) Knowledge and tools.**
 
-## 📋 Pre-requisites
-
-Before starting this challenge, ensure you have completed:
-- **Challenge 0**: Environment setup and Azure resource deployment
-- **Challenge 1**: Document processing and vectorized search setup
-
-You will need:
-- Azure AI Agent Service enabled in your subscription
-- Access to the Azure AI Search index from Challenge 1
-- Azure OpenAI service with GPT-4 model deployed
 
 ## 🛠️ Implementation Tasks
 
