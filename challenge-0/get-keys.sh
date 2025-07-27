@@ -177,10 +177,9 @@ if [ -n "$aiFoundryHubName" ] && [ -n "$searchServiceName" ]; then
     subscriptionId=$(az account show --query id -o tsv 2>/dev/null || echo "")
     
     if [ -n "$subscriptionId" ]; then
-        # Construct the connection ID based on the pattern you provided
-        # Pattern: /subscriptions/{subscription}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{aiFoundryHub}/connections/{searchServiceWithoutDashes}
-        searchServiceNameNoDashes=$(echo "$searchServiceName" | sed 's/-//g')
-        azureAIConnectionId="/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/${aiFoundryHubName}/connections/${searchServiceNameNoDashes}"
+        # Construct the connection ID based on the pattern: aiFoundryHubName + "-aisearch"
+        # Pattern: /subscriptions/{subscription}/resourceGroups/{rg}/providers/Microsoft.CognitiveServices/accounts/{aiFoundryHub}/connections/{aiFoundryHub}-aisearch
+        azureAIConnectionId="/subscriptions/${subscriptionId}/resourceGroups/${resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/${aiFoundryHubName}/connections/${aiFoundryHubName}-aisearch"
         echo "Constructed connection ID: $azureAIConnectionId"
     else
         echo "Warning: Could not get subscription ID"
@@ -257,6 +256,8 @@ echo "COSMOS_CONNECTION_STRING=\"$cosmosDbConnectionString\"" >> ../.env
 echo "AZURE_OPENAI_SERVICE_NAME=\"$aiFoundryHubName\"" >> ../.env
 echo "AZURE_OPENAI_ENDPOINT=\"$aiFoundryEndpoint\"" >> ../.env
 echo "AZURE_OPENAI_KEY=\"$aiFoundryKey\"" >> ../.env
+echo "AZURE_OPENAI_DEPLOYMENT_NAME=\"gpt-4.1-mini\"" >> ../.env
+echo "MODEL_DEPLOYMENT_NAME=\"gpt-4.1-mini\"" >> ../.env
 
 echo "Keys and properties are stored in '.env' file successfully."
 
