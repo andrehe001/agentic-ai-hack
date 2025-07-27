@@ -30,6 +30,7 @@ By participating in this hackathon, you will learn how to:
 - **Master Agent Orchestration Patterns**: Design and coordinate multiple specialized agents to work together through various orchestration patterns including sequential, concurrent, group chat, handoff, and managerial orchestration for complex insurance claim workflows.
 
 ## Architecture
+<img width="1815" height="834" alt="image" src="https://github.com/user-attachments/assets/b48d36f0-54c6-4792-82d8-5e1fe558daab" />
 
 ## Requirements
 To successfully complete this hackathon, you will need the following:
