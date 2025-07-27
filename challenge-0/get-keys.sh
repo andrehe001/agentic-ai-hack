@@ -86,7 +86,8 @@ echo "Getting the keys from the resources..."
 # Storage account
 if [ -n "$storageAccountName" ]; then
     storageAccountKey=$(az storage account keys list --account-name $storageAccountName --resource-group $resourceGroupName --query "[0].value" -o tsv 2>/dev/null || echo "")
-    storageAccountConnectionString=$(az storage account show-connection-string --name $storageAccountName --resource-group $resourceGroupName --query connectionString -o tsv 2>/dev/null || echo "")
+    # Construct the connection string in the correct format
+    storageAccountConnectionString="DefaultEndpointsProtocol=https;AccountName=${storageAccountName};AccountKey=${storageAccountKey};EndpointSuffix=core.windows.net"
 else
     echo "Warning: Storage account not found"
     storageAccountKey=""
@@ -190,6 +191,18 @@ else
     azureAIConnectionId=""
 fi
 
+# Construct AI Foundry Project Endpoint if not found in deployment outputs
+if [ -z "$aiFoundryProjectEndpoint" ] && [ -n "$aiFoundryHubName" ] && [ -n "$aiFoundryProjectName" ]; then
+    echo "Constructing AI Foundry Project Endpoint..."
+    aiFoundryProjectEndpoint="https://${aiFoundryHubName}.services.ai.azure.com/api/projects/${aiFoundryProjectName}"
+    echo "Constructed project endpoint: $aiFoundryProjectEndpoint"
+elif [ -n "$aiFoundryProjectEndpoint" ] && [[ "$aiFoundryProjectEndpoint" == *"ai.azure.com/build/overview"* ]]; then
+    # If we got a web UI URL from deployment outputs, convert it to API endpoint
+    echo "Converting web UI URL to API endpoint..."
+    aiFoundryProjectEndpoint="https://${aiFoundryHubName}.services.ai.azure.com/api/projects/${aiFoundryProjectName}"
+    echo "Converted project endpoint: $aiFoundryProjectEndpoint"
+fi
+
 # Overwrite the existing .env file
 if [ -f ../.env ]; then
     rm ../.env
@@ -218,6 +231,17 @@ echo "AI_FOUNDRY_PROJECT_NAME=\"$aiFoundryProjectName\"" >> ../.env
 echo "AI_FOUNDRY_ENDPOINT=\"$aiFoundryEndpoint\"" >> ../.env
 echo "AI_FOUNDRY_KEY=\"$aiFoundryKey\"" >> ../.env
 echo "AI_FOUNDRY_HUB_ENDPOINT=\"$aiFoundryHubEndpoint\"" >> ../.env
+# Construct AI Foundry Project Endpoint if not found in deployment outputs
+if [ -z "$aiFoundryProjectEndpoint" ] && [ -n "$aiFoundryHubName" ] && [ -n "$aiFoundryProjectName" ]; then
+    echo "Constructing AI Foundry Project Endpoint..."
+    aiFoundryProjectEndpoint="https://${aiFoundryHubName}.services.ai.azure.com/api/projects/${aiFoundryProjectName}"
+    echo "Constructed project endpoint: $aiFoundryProjectEndpoint"
+elif [ -n "$aiFoundryProjectEndpoint" ] && [[ "$aiFoundryProjectEndpoint" == *"ai.azure.com/build/overview"* ]]; then
+    # If we got a web UI URL from deployment outputs, convert it to API endpoint
+    echo "Converting web UI URL to API endpoint..."
+    aiFoundryProjectEndpoint="https://${aiFoundryHubName}.services.ai.azure.com/api/projects/${aiFoundryProjectName}"
+    echo "Converted project endpoint: $aiFoundryProjectEndpoint"
+fi
 echo "AI_FOUNDRY_PROJECT_ENDPOINT=\"$aiFoundryProjectEndpoint\"" >> ../.env
 echo "KEY_VAULT_NAME=\"$keyVaultName\"" >> ../.env
 echo "CONTAINER_REGISTRY_NAME=\"$containerRegistryName\"" >> ../.env
