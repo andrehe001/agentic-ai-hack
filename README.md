@@ -33,10 +33,11 @@ By participating in this hackathon, you will learn how to:
 ## Requirements
 To successfully complete this hackathon, you will need the following:
 
-- GitHub account to access the repository and run GitHub Codespaces.
-- Familiarity with Python programming, including handling JSON data and making API calls.
+- GitHub account to access the repository and run GitHub Codespaces and Github Copilot.
+- Be familiar with Python programming, including handling JSON data and making API calls.​
+- Be familiar with Generative AI Solutions and Azure AI Services.
 - An active Azure subscription, with Owner or Contributor rights.
-- Ability to provision resources in **Sweden Central** and **West Europe**.
+- Ability to provision resources in **Sweden Central** or another supported region.
 
 ## Challenges
 

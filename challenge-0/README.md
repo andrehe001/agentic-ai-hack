@@ -28,7 +28,7 @@ If the above button gives a CORS error, follow these steps:
 
 **NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
-Resource deployment can take up to 30 minutes due to one of the resources Don't worry, adter 2/3 minutes you'll be able to find most of the resources on your resource-group
+Resource deployment can take up to 5 minutes, afterwards you'll be able to find most of the resources on your resource group.
 
 In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
 

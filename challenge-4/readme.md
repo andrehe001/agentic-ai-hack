@@ -63,13 +63,6 @@ Each notebook demonstrates:
 - **Advanced Functionality**: Implementation of specialized processing logic for each agent's domain
 - **Context Management**: Proper handling of information and state within individual agents
 
-### How to Use the Solution
-
-1. **Start with Policy Checker**: Begin with the foundational policy analysis agent
-2. **Progress through each agent**: Build understanding of different specializations step by step
-3. **Study the plugins**: Examine the custom Semantic Kernel plugins that enhance agent capabilities
-4. **Prepare for orchestration**: Understanding these individual agents will prepare you for Challenge 5's multi-agent coordination
-
 This solution demonstrates the power of combining Azure AI Agent Service's enterprise-grade capabilities with Semantic Kernel's flexible plugin framework, creating robust, scalable, and maintainable specialized agents that will serve as the foundation for your multi-agent system in the next challenge.
 
 
