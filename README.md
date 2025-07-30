@@ -28,6 +28,8 @@ By participating in this hackathon, you will learn how to:
 - **Master Agent Orchestration Patterns**: Design and coordinate multiple specialized agents to work together through various orchestration patterns including sequential, concurrent, group chat, handoff, and managerial orchestration for complex insurance claim workflows.
 
 ## Architecture
+When a claimant uploads crash-related documents, images, or statements to an Azure Storage Account, an automated workflow is triggered to process the submission. The content is ingested and initially structured using the Azure AI Foundry, where advanced language models assist in cleaning and organizing the information. Leveraging AI-based transformation, key details are extracted and converted into standardized JSON formats. These structured documents are then seamlessly stored in Azure CosmosDB, providing a scalable, high-performance repository that supports efficient data retrieval and downstream analytics.
+
 <img width="1815" height="834" alt="image" src="https://github.com/user-attachments/assets/b48d36f0-54c6-4792-82d8-5e1fe558daab" />
 
 ## Requirements
