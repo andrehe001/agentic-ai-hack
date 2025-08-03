@@ -163,40 +163,11 @@ curl -X GET "http://localhost:7071/api/claim?claim_id=CL004"
 - Different claim validation outcomes
 - How agents handle different types of incidents
 
-### 🚀 Next Steps: Deploying to Azure
-
 Once you've tested your multi-agent orchestrator locally and confirmed it's working correctly, the next logical step would be to deploy it to Azure for production use. This involves deploying your Azure Function app to Azure Functions in the cloud, which provides enterprise-grade scalability, monitoring, and security features. You would typically use the Azure CLI or Azure DevOps pipelines to deploy your function code, configure environment variables for your Azure AI and Cosmos DB connections, and set up proper monitoring and logging. Azure Functions offers automatic scaling based on demand, built-in authentication and authorization, and seamless integration with other Azure services your agents depend on. Additionally, you could configure Application Insights for detailed telemetry and performance monitoring of your multi-agent system in production.
 
-## Part 3 - Expand your tools! (Optional)
+## Part 3 - Start the integration of several tools with ... MCP Server! 
 
-Now that you've built your basic orchestrator, it's time to supercharge your multi-agent system! Let's go back to Github Copilot and use this amazing prompt to provide some ideas on how to expand this challenge:
-
-```
-I'm building a multi-agent insurance claim processing system using Azure AI Agent Service and Semantic Kernel orchestration. My current system has:
-
-- Claim Reviewer Agent (analyzes claims using Cosmos DB)
-- Policy Checker Agent (validates coverage using Azure AI Search)
-- Risk Analyzer Agent (evaluates risk factors using Cosmos DB)
-- Master Orchestrator Agent (coordinates all agents)
-
-Current tools: CosmosDB Plugin, Azure AI Search connections
-
-Please suggest 3-5 specific, implementable expansions that would add the most value to my system. For each suggestion, provide:
-1. **Tool/Feature Name**
-2. **Business Value** (how it improves claim processing)
-3. **Technical Implementation** (specific Azure services or APIs to use)
-4. **Integration Point** (which agent would use it and how)
-5. **Code Skeleton** (basic function signature or plugin structure)
-
-Focus on expansions that:
-- Solve real insurance industry challenges
-- Leverage Azure ecosystem services
-- Can be implemented within 20-40 minutes
-- Integrate seamlessly with existing orchestration
-- Provide measurable business impact
-
-Priority areas: [Choose 1-2: fraud detection, customer experience, processing speed, cost reduction, compliance, accuracy]
-```
+Now that you have a fully functional multi-agent orchestrator running as an Azure Function, you can extend its capabilities by exposing it as a Model Context Protocol (MCP) server. This allows your insurance claim processing agents to be consumed by AI assistants, development tools, and other applications that support MCP. By leveraging [Azure Functions MCP bindings](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-mcp?pivots=programming-language-python), you can transform your orchestrator into a standardized tool that AI models can discover and use dynamically. The MCP server would expose your agents' capabilities as structured tools - for example, a "process_insurance_claim" tool that accepts claim IDs and returns comprehensive analyses. To make this production-ready, you'd deploy your function behind Azure API Management (APIM) to provide enterprise features like authentication, rate limiting, API versioning, and detailed analytics. APIM acts as a gateway that can transform your function endpoints into MCP-compatible interfaces while providing security policies and monitoring. You can reference the [Azure MCP Functions Python samples](https://github.com/Azure-Samples/remote-mcp-functions-python) to see how to structure your function for MCP compatibility, including proper tool definitions, parameter schemas, and response formatting that AI assistants can understand and utilize effectively.
 
 ###  Challenge Yourself!
 
