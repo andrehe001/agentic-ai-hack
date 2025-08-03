@@ -1,5 +1,7 @@
 
-# 1. Environment Creation and Resources Deployment
+# 1. Environment Creation a**NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your subscription. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and then re-run the deployment.
+
+Resource deployment can take up to 30 minutes due to one of the resources. Don't worry, after 2/3 minutes you'll be able to find most of the resources in your resource group.Resources Deployment
 
 Welcome to your very first challenge! Your goal in this challenge is to create the services and enviornment necessary to conduct this hackathon. You will deploy the required resources in Azure, create your development enviornment and all the assets necessary for the subsequent challenges. By completing this challenge, you will set up the foundation for the rest of the hackathon. 
 
@@ -15,6 +17,8 @@ The first step on this hackathon will be to create the resources we will use thr
 
 ### Method 1: One-Click Deploy
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmartaldsantos%2Fagentic-ai-hack%2Fmain%2Fchallenge-0%2Fiac%2Fazuredeploy.json)
+
+> **Note:** You can leave the **servicePrincipalObjectId** parameter empty during deployment. Only fill it if you plan to use Azure Functions in Challenge 5 and your coach provides you with the Object ID.
 
 ### Method 2: Manual Deploy (if button doesn't work)
 If the above button gives a CORS error, follow these steps:
@@ -57,13 +61,16 @@ After deploying the resources, you will need to configure the environment variab
 az login --use-device-code
 ```
 
-The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created running the following command within the terminal in your Codespace:
+The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created by running the following command within the terminal in your Codespace.
 
+**Then run the get-keys script with your resource group name:**
 ```bash
-cd challenge-0 && ./get-keys.sh --resource-group <resource-group-name>
+cd challenge-0 && ./get-keys.sh --resource-group YOUR_RESOURCE_GROUP_NAME
 ```
 
-This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository. If needed, script will prompt you to sign in to your Azure account.
+Replace `YOUR_RESOURCE_GROUP_NAME` with the actual name from the first command.
+
+This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository.
 
 
 ## 1.6 Verify `.env` setup

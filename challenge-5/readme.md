@@ -55,6 +55,115 @@ When building intelligent agents, you have two primary implementation approaches
 
 ## Part 2 - Now onto automation!
 
+Great! Now that you've built your orchestrator in the Jupyter notebook, it's time to deploy it as a production-ready Azure Function app. We've already prepared the Azure Function infrastructure in the `azure-function-orchestrator` folder.
+
+1. **Start the Function App** (if not already running):
+   ```bash
+   # Navigate to the function app directory
+   cd challenge-5/azure-function-orchestrator
+   
+   # Start the Azure Functions runtime
+   func host start
+   ```
+   
+   Or use the VS Code task: `func: func: host start` from the command palette (Ctrl+Shift+P).
+
+
+2.  **Testing Your Multi-Agent System**
+
+
+Now let's test each endpoint to ensure everything is working correctly:
+
+
+Test basic functionality:
+```bash
+curl -X GET "http://localhost:7071/api/health"
+```
+
+Test with orchestrator initialization:
+```bash
+curl -X GET "http://localhost:7071/api/health?test_orchestrator=true"
+```
+
+
+#### 3. Process Insurance Claims
+This is the main endpoint that orchestrates your agents! # Process a specific claim (CL001)
+
+```bash
+curl -X GET "http://localhost:7071/api/claim?claim_id=CL001"
+```
+
+
+
+### 📊 Understanding the Response
+
+When you process a claim, you'll get a comprehensive JSON response containing:
+
+```json
+{
+  "status": "success",
+  "claim_id": "CL001",
+  "agent_analyses": [
+    {
+      "agent_name": "PolicyChecker",
+      "analysis": "Coverage analysis results..."
+    },
+    {
+      "agent_name": "ClaimReviewer", 
+      "analysis": "Claim validation results..."
+    },
+    {
+      "agent_name": "RiskAnalyzer",
+      "analysis": "Risk assessment results..."
+    }
+  ],
+  "comprehensive_analysis": "# Combined multi-agent analysis report...",
+  "timestamp": "timestamp_value"
+}
+```
+
+### 🔧 Troubleshooting
+
+**If the function app won't start:**
+1. Check that all dependencies are installed: `pip install -r requirements.txt`
+2. Verify your Azure credentials are configured
+3. Check the terminal output for specific error messages
+
+**If you get authentication errors:**
+1. Ensure your Azure credentials are properly configured
+2. Check that your environment variables are set correctly
+3. Verify your Azure AI and Cosmos DB connections
+
+**If agents aren't responding correctly:**
+1. Test the Cosmos DB connection endpoint first
+2. Check the logs in the terminal for detailed error messages
+3. Verify your AI model deployments are active
+
+### 🎯 Success Indicators
+
+You'll know your system is working correctly when:
+- ✅ Health check returns `"status": "healthy"`
+- ✅ Cosmos DB test shows available claim IDs
+- ✅ Claim processing returns analysis from all three agents
+- ✅ Each agent provides specialized analysis (policy coverage, claim validation, risk assessment)
+- ✅ The comprehensive analysis combines all agent outputs
+
+### 📈 Testing Different Scenarios
+
+Try processing different claim IDs to see how your agents handle various scenarios:
+```bash
+# Test different claims to see varied responses
+curl -X GET "http://localhost:7071/api/claim?claim_id=CL002"
+curl -X GET "http://localhost:7071/api/claim?claim_id=CL003"
+curl -X GET "http://localhost:7071/api/claim?claim_id=CL004"
+```
+
+**What to Look For:**
+- Different risk levels across claims
+- Varying policy coverage decisions
+- Different claim validation outcomes
+- How agents handle different types of incidents
+
 
 
 ## Part 3 - Expand your tools! (Optional)
