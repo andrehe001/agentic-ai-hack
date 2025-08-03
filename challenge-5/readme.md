@@ -72,8 +72,7 @@ Great! Now that you've built your orchestrator in the Jupyter notebook, it's tim
 2.  **Testing Your Multi-Agent System**
 
 
-Now let's test each endpoint to ensure everything is working correctly:
-
+Now let's test each endpoint to ensure everything is working correctly. Please open another terminal and run the following commands:
 
 Test basic functionality:
 ```bash
@@ -164,7 +163,9 @@ curl -X GET "http://localhost:7071/api/claim?claim_id=CL004"
 - Different claim validation outcomes
 - How agents handle different types of incidents
 
+### 🚀 Next Steps: Deploying to Azure
 
+Once you've tested your multi-agent orchestrator locally and confirmed it's working correctly, the next logical step would be to deploy it to Azure for production use. This involves deploying your Azure Function app to Azure Functions in the cloud, which provides enterprise-grade scalability, monitoring, and security features. You would typically use the Azure CLI or Azure DevOps pipelines to deploy your function code, configure environment variables for your Azure AI and Cosmos DB connections, and set up proper monitoring and logging. Azure Functions offers automatic scaling based on demand, built-in authentication and authorization, and seamless integration with other Azure services your agents depend on. Additionally, you could configure Application Insights for detailed telemetry and performance monitoring of your multi-agent system in production.
 
 ## Part 3 - Expand your tools! (Optional)
 
@@ -179,8 +180,6 @@ I'm building a multi-agent insurance claim processing system using Azure AI Agen
 - Master Orchestrator Agent (coordinates all agents)
 
 Current tools: CosmosDB Plugin, Azure AI Search connections
-
-CONTEXT: [Describe your specific insurance use case, claim types, or business requirements here]
 
 Please suggest 3-5 specific, implementable expansions that would add the most value to my system. For each suggestion, provide:
 1. **Tool/Feature Name**
@@ -219,3 +218,4 @@ Congratulations! You've successfully built a multi-agent orchestration system th
 - Created a Master Orchestrator that synthesizes outputs from multiple agents
 - Built hybrid solutions combining Azure AI Agent Service with custom Semantic Kernel plugins
 - Developed a production-ready framework for intelligent insurance claim processing
+- Prepared the system for enterprise deployment to Azure Functions with scalability and monitoring capabilities

@@ -141,8 +141,3 @@ azure-functions
 azure-cosmos
 azure-identity
 semantic-kernel
-asyncio
-typing
-datetime
-json
-logging
