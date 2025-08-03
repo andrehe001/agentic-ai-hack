@@ -18,6 +18,26 @@
       "metadata": {
         "description": "Azure location where resources should be deployed (e.g., swedencentral)"
       }
+<<<<<<< HEAD
+=======
+    },
+    "locationDocumentIntelligence": {
+      "type": "string",
+      "defaultValue": "westeurope",
+      "allowedValues": [
+        "westeurope"
+      ],
+      "metadata": {
+        "description": "Azure location where Azure Document Intelligence should be deployed (e.g., westeurope)"
+      }
+    },
+    "servicePrincipalObjectId": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional: Object ID (Principal ID) of the service principal to grant permissions to AI Foundry resources"
+      }
+>>>>>>> ms
     }
 
   },
@@ -34,7 +54,9 @@
     "applicationInsightsName": "[format('{0}-appinsights-{1}', variables('prefix'), variables('suffix'))]",
     "cosmosDbAccountName": "[format('{0}-cosmos-{1}', variables('prefix'), variables('suffix'))]",
     "cognitiveServicesUserRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a97b65f3-24c7-4388-baec-2e87135dc908')]",
-    "searchServiceContributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0')]"
+    "searchServiceContributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7ca78c08-252a-4471-8644-bb5ff32d4ba0')]",
+    "aiDeveloperRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '64702f94-c441-49e6-a78b-ef80e0188fee')]",
+    "contributorRoleId": "[subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]"
   },
   "resources": [
     {
@@ -255,6 +277,51 @@
       "dependsOn": [
         "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]",
         "[resourceId('Microsoft.Search/searchServices', variables('searchServiceName'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('servicePrincipalObjectId')))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), parameters('servicePrincipalObjectId'), variables('cognitiveServicesUserRoleId'))]",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('aiFoundryName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('cognitiveServicesUserRoleId')]",
+        "principalId": "[parameters('servicePrincipalObjectId')]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('servicePrincipalObjectId')))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), parameters('servicePrincipalObjectId'), variables('aiDeveloperRoleId'))]",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('aiFoundryName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('aiDeveloperRoleId')]",
+        "principalId": "[parameters('servicePrincipalObjectId')]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
+      ]
+    },
+    {
+      "condition": "[not(empty(parameters('servicePrincipalObjectId')))]",
+      "type": "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "name": "[guid(resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName')), parameters('servicePrincipalObjectId'), variables('contributorRoleId'))]",
+      "scope": "[format('Microsoft.CognitiveServices/accounts/{0}', variables('aiFoundryName'))]",
+      "properties": {
+        "roleDefinitionId": "[variables('contributorRoleId')]",
+        "principalId": "[parameters('servicePrincipalObjectId')]",
+        "principalType": "ServicePrincipal"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.CognitiveServices/accounts', variables('aiFoundryName'))]"
       ]
     },
     {

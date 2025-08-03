@@ -94,8 +94,6 @@ Just like challenge-2, here you have the option to trace every run of your agent
 
 Please jump over to the [How to start tracing your application](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/trace-application#enable-tracing-in-your-project) and follow the steps to enable the Application Insights service (already deployed in challenge-0).
 
-Now, you can choose to start tracing every run either through the Portal or jumping over to the `agent-tracing.py` notebook.
-
 ## 🎯 Conclusion
 
 By completing Challenge 3, you've implemented a comprehensive observability and evaluation framework for your AI agents. You've learned to systematically assess agent performance using Azure AI Foundry's built-in evaluators, create synthetic test datasets, and set up continuous monitoring pipelines. These capabilities ensure your agents maintain high quality, safety, and reliability standards throughout their operational lifecycle, giving you the confidence to deploy robust AI solutions in production environments.

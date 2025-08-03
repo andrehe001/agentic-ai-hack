@@ -9,6 +9,10 @@ param aiFoundryName string = 'aifoundry'
 
 @description('Name for the AI project')
 param aiProjectName string = 'my-ai-project'
+
+@description('Optional: Object ID (Principal ID) of the service principal to grant permissions to AI Foundry resources')
+param servicePrincipalObjectId string = ''
+
 param locationDocumentIntelligence string = 'westeurope' // West Europe hast the latest models needed for Document Intelligence
 
 var prefix = 'msagthack'
@@ -331,6 +335,47 @@ resource projectSearchRoleAssignment 'Microsoft.Authorization/roleAssignments@20
   properties: {
     roleDefinitionId: searchServiceContributorRoleId
     principalId: aiProject.identity.principalId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+/*
+  Service Principal Role Assignments (optional)
+*/
+
+// Role definitions for service principal
+var aiDeveloperRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '64702f94-c441-49e6-a78b-ef80e0188fee')
+var contributorRoleId = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+
+// Grant Cognitive Services User role to service principal
+resource servicePrincipalCognitiveServicesUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(servicePrincipalObjectId)) {
+  name: guid(aiFoundry.id, servicePrincipalObjectId, cognitiveServicesUserRoleId)
+  scope: aiFoundry
+  properties: {
+    roleDefinitionId: cognitiveServicesUserRoleId
+    principalId: servicePrincipalObjectId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// Grant AI Developer role to service principal
+resource servicePrincipalAIDeveloperRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(servicePrincipalObjectId)) {
+  name: guid(aiFoundry.id, servicePrincipalObjectId, aiDeveloperRoleId)
+  scope: aiFoundry
+  properties: {
+    roleDefinitionId: aiDeveloperRoleId
+    principalId: servicePrincipalObjectId
+    principalType: 'ServicePrincipal'
+  }
+}
+
+// Grant Contributor role to service principal as fallback
+resource servicePrincipalContributorRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(servicePrincipalObjectId)) {
+  name: guid(aiFoundry.id, servicePrincipalObjectId, contributorRoleId)
+  scope: aiFoundry
+  properties: {
+    roleDefinitionId: contributorRoleId
+    principalId: servicePrincipalObjectId
     principalType: 'ServicePrincipal'
   }
 }

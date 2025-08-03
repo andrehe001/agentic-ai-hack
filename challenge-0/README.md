@@ -1,6 +1,5 @@
 
 # 1. Environment Creation and Resources Deployment
-
 Welcome to your very first challenge! Your goal in this challenge is to create the services and enviornment necessary to conduct this hackathon. You will deploy the required resources in Azure, create your development enviornment and all the assets necessary for the subsequent challenges. By completing this challenge, you will set up the foundation for the rest of the hackathon. 
 
 If something is not working correctly, please do let your coach know!
@@ -13,12 +12,26 @@ Before you start, please fork this repository to your GitHub account by clicking
 ## 1.2 Resource Deployment Guide
 The first step on this hackathon will be to create the resources we will use throughout the day. You can deploy using either the one-click button or manual method below.
 
-### Method 1: One-Click Deploy
+Before anything else, let's log in into the CLI with our account. Please paste the code underneath and follow the necessary instructions.
+
+```bash
+az login --use-device-code
+```
+
+Now, let's retrieve our object_id:
+
+```bash
+./get-sp-object-id.sh
+```
+If you run into permission issues, please run "chmod +x get-sp-object-id.sh" first. Save the value returned, we will use it on the next step.
+
+Now, time to deploy our resources to Azure!
+
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmartaldsantos%2Fagentic-ai-hack%2Fmain%2Fchallenge-0%2Fiac%2Fazuredeploy.json)
 
-### Method 2: Manual Deploy (if button doesn't work)
-If the above button gives a CORS error, follow these steps:
+> **Note:** You can leave the **servicePrincipalObjectId** parameter empty during deployment. Only fill it if you plan to use Azure Functions in Challenge 5 and your coach provides you with the Object ID.
 
+<<<<<<< HEAD
 1. **Download the template**: Right-click [this link](https://raw.githubusercontent.com/martaldsantos/agentic-ai-hack/main/challenge-0/iac/azuredeploy.json) and save the JSON file
 2. **Open Azure Portal**: Go to [portal.azure.com](https://portal.azure.com)
 3. **Create Custom Deployment**: Search for "Deploy a custom template" or go to [Custom deployment](https://portal.azure.com/#create/Microsoft.Template)
@@ -29,6 +42,9 @@ If the above button gives a CORS error, follow these steps:
 **NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
 Resource deployment can take up to 5 minutes, afterwards you'll be able to find most of the resources on your resource group.
+=======
+Resource deployment can take up to 5 minutes due to one of the resources. Don't worry, after 2/3 minutes you'll be able to find most of the resources in your resource group.
+>>>>>>> ms
 
 In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
 
@@ -51,19 +67,16 @@ Go back to your `Azure Portal` and find your `Resource Group`that should by now 
 ![alt text](image.png)
 
 ## 1.5 Let's retrieve the necessary keys
-After deploying the resources, you will need to configure the environment variables in the `.env` file. Before anything else, let's log in into the CLI with our account.
+After deploying the resources, you will need to configure the environment variables in the `.env` file. Double check you have logged in into your Azure account on the CLI. If that's settled, let's move into retrieving our keys. The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created by running the following command within the terminal in your Codespace.
 
+**Then run the get-keys script with your resource group name:**
 ```bash
-az login --use-device-code
+cd challenge-0 && ./get-keys.sh --resource-group YOUR_RESOURCE_GROUP_NAME
 ```
 
-The `.env` file is a configuration file that contains the environment variables for the application. The `.env` file is automatically created running the following command within the terminal in your Codespace:
+Replace `YOUR_RESOURCE_GROUP_NAME` with the actual name from the first command.
 
-```bash
-cd challenge-0 && ./get-keys.sh --resource-group <resource-group-name>
-```
-
-This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository. If needed, script will prompt you to sign in to your Azure account.
+This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository.
 
 
 ## 1.6 Verify `.env` setup
