@@ -1,6 +1,6 @@
 # Challenge 5: Agent Orchestration
 
-**Expected Duration:** 30 minutes
+**Expected Duration:** 60 minutes
 
 ## Introduction
 By this point we have created **the three agents** and have seen how to evaluate and observe one specific agent. As you know, our use case is a bit more complex and, therefore, we will now create the rest of our architecture to actually make it a multi-agent architecture and not just 3 separate agents. The key word for this challenge will be **Orchestration**.
