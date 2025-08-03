@@ -31,13 +31,7 @@ Let's have a look at the 2 most common Orchestration patterns:
 In `Sequential Orchestration` the Agents are dependent on a task performed from the previous agent. This is very common in workflows like document processing or step-by-step procedures. With `Concurrent Orchestration` the agents are not dependent on each other and therefore it makes this a great orchestration for parallel processing, multi-source research and so on.
 
 ## Let's come back to our use case...
-`Concurrent Orchestration` is the answer for our use case. We will have 3 agents that are each responsible for gathering and processing specialized information on different matters from different datasources in our knowledge base. In this challenge, we will create a 4th agent that is responsible for Orchestrating these 3 agents and create the final output that we need. Our orchestration will be something like the following:
-
-![alt text](image-1.png)
-
-
-In this exercise, you'll create a multi-agent orchestration system using Semantic Kernel's concurrent orchestration pattern.
-Our orchestration system consists of four agents. Please have a look at the table underneath and review how we have created our 3 orchestrators.
+`Concurrent Orchestration` is the answer for our use case. We will have 3 agents that are each responsible for gathering and processing specialized information on different matters from different datasources in our knowledge base. In this challenge, we will create a 4th agent that is responsible for Orchestrating these 3 agents and create the final output that we need. Please have a look at the table underneath and review how we have created our 3 orchestrators.
 
 | Agent | Function | Data Source/Technology | Implementation |
 |-------|----------|----------------------|----------------|
@@ -48,7 +42,7 @@ Our orchestration system consists of four agents. Please have a look at the tabl
 
 ### Understanding Implementation Approaches: Azure AI Agent Service vs Semantic Kernel Integration
 
-When building intelligent agents, you have two primary implementation approaches available in the Azure ecosystem. **Azure AI Agent Service with direct tool connections** provides a streamlined, low-code approach where agents are configured through the Azure AI Foundry portal with direct connections to Azure services like Azure AI Search, enabling rapid prototyping and deployment with built-in enterprise features like security, monitoring, and compliance. This approach is ideal for straightforward scenarios where agents need to access specific Azure services without complex custom logic. In contrast, **Azure AI Agents with Semantic Kernel integration** offers a more flexible, code-first approach that combines the enterprise-grade capabilities of Azure AI Agent Service with Semantic Kernel's powerful plugin framework. This hybrid approach allows developers to create custom plugins with complex business logic, advanced data processing capabilities, and sophisticated integrations (like our Cosmos DB plugin for retrieving structured claim data), while still benefiting from Azure's managed infrastructure and security features. The Semantic Kernel approach is particularly valuable when you need custom data transformations, complex orchestration patterns, or when integrating with *non-Azure* services, as demonstrated in our Claim Reviewer and Risk Analyzer agents that use custom plugins to process insurance data from Cosmos DB with specialized business rules.
+When building intelligent agents, you have two primary implementation approaches available in the Azure ecosystem. **Azure AI Agent Service with direct tool connections** provides a streamlined, low-code approach where agents are configured through the Azure AI Foundry portal with direct connections to Azure services like Azure AI Search, enabling rapid prototyping and deployment with built-in enterprise features like security, monitoring, and compliance. This approach is ideal for straightforward scenarios where agents need to access specific Azure services without complex custom logic. In contrast, **Azure AI Agents with Semantic Kernel integration** offers a more flexible, code-first approach that combines the enterprise-grade capabilities of Azure AI Agent Service with Semantic Kernel's powerful plugin framework. This hybrid approach allows developers to create custom plugins with complex business logic, advanced data processing capabilities, and sophisticated integrations (like our Cosmos DB plugin for retrieving structured claim data), while still benefiting from Azure's managed infrastructure and security features. The Semantic Kernel approach is particularly valuable when you need custom data transformations, complex orchestration patterns, or when integrating with *non-Azure* services.
 
 ## Exercise Guide - Time to Orchestrate!
 
@@ -58,7 +52,12 @@ When building intelligent agents, you have two primary implementation approaches
 2. Notice that in the same folder we also have the `policy_checker.py` file that brins us back to challenge 2 and our first agent. Please have a look at these two files before beggining the exercise.
 3. Time to build your orchestrator! Please jump over to `orchestration.ipynb` file for a demonstration on how we will integrated our troop of agents to help us solve our pickle! 
 
-## Part 2 - Expand your tools! (Optional)
+
+## Part 2 - Now onto automation!
+
+
+
+## Part 3 - Expand your tools! (Optional)
 
 Now that you've built your basic orchestrator, it's time to supercharge your multi-agent system! Let's go back to Github Copilot and use this amazing prompt to provide some ideas on how to expand this challenge:
 
