@@ -33,7 +33,7 @@ Now, time to deploy our resources to Azure!
 
 > **Note:** You can leave the **servicePrincipalObjectId** parameter empty during deployment. Only fill it if you plan to use Azure Functions in Challenge 5 and your coach provides you with the Object ID.
 
-<<<<<<< HEAD
+**Manually upload the Template**
 1. **Download the template**: Right-click [this link](https://raw.githubusercontent.com/martaldsantos/agentic-ai-hack/main/challenge-0/iac/azuredeploy.json) and save the JSON file
 2. **Open Azure Portal**: Go to [portal.azure.com](https://portal.azure.com)
 3. **Create Custom Deployment**: Search for "Deploy a custom template" or go to [Custom deployment](https://portal.azure.com/#create/Microsoft.Template)
@@ -43,12 +43,7 @@ Now, time to deploy our resources to Azure!
 
 **NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
-Resource deployment can take up to 5 minutes, afterwards you'll be able to find most of the resources on your resource group.
-=======
-Resource deployment can take up to 5 minutes due to one of the resources. Don't worry, after 2/3 minutes you'll be able to find most of the resources in your resource group.
->>>>>>> ms
-
-In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
+Resource deployment can take up to 5 minutes, afterwards you'll be able to find most of the resources on your resource group. In the meantime, you can proceed with the next step - opening a pre-configured development environment in GitHub Codespaces.
 
 ## 1.3 Development Environment
 
