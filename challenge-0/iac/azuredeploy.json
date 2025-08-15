@@ -18,8 +18,6 @@
       "metadata": {
         "description": "Azure location where resources should be deployed (e.g., swedencentral)"
       }
-<<<<<<< HEAD
-=======
     },
     "locationDocumentIntelligence": {
       "type": "string",
@@ -37,9 +35,7 @@
       "metadata": {
         "description": "Optional: Object ID (Principal ID) of the service principal to grant permissions to AI Foundry resources"
       }
->>>>>>> ms
     }
-
   },
   "variables": {
     "prefix": "msagthack",
