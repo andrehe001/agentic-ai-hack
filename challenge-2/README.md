@@ -124,18 +124,18 @@ the following options:
 15. Time to prompt! Let's explore our vector knowledge base before giving any Action step to our Agent. So far, we have done the equivalent of a normal RAG scenario. 
 
 ```
-I have policy POL-AUTO-12345 and was in a rear-end collision. Is this covered under my policy? The damage estimate is $3,500.
+What are the most comprehensive insurance policies for cars?
 ```
 
 ```
-Make a summary of the last claim from License plate OH - GHR1984
+What policies do we have for motorcycles?
 ```
 
 ```
-My 17-year-old son was driving my car when the accident happened. Are we still covered under policy POL-AUTO-33333?
+Tell me about Liability Only Insurances 
 ```
 
-### Option 2 - Creating your Agent Backbone - On the Portal
+### Option 2 - Creating your Agent Backbone - Using the SDK
 
 So far, we have created the beggining of our agent using Azure AI Agent Service in the Portal. Now, **let's start coding!** Our Agent, as of now, is able to access our Azure AI Search, our Vector Database. This is, essentially, your first tool they can access.
 

@@ -18,18 +18,66 @@ Before anything else, let's log in into the CLI with our account. Please paste t
 az login --use-device-code
 ```
 
-Now, let's retrieve our object_id:
+## 1.2.1 Service Principal Setup (Optional - For Challenge 5)
 
+**Note:** This step is only required if you plan to use Azure Functions in Challenge 5. If you're unsure, you can skip this step and proceed to deployment.
+
+The Azure resources include optional service principal permissions that allow automated access to AI services. If you want to use these features:
+
+### Option 1: Use an existing service principal
+If you have an existing service principal (Client ID), run:
+
+**Linux/macOS/WSL:**
 ```bash
-./get-sp-object-id.sh
+./get-sp-object-id.sh YOUR_CLIENT_ID
 ```
-If you run into permission issues, please run "chmod +x get-sp-object-id.sh" first. Save the value returned, we will use it on the next step.
+
+**Windows PowerShell:**
+```powershell
+.\get-sp-object-id.ps1 YOUR_CLIENT_ID
+```
+
+### Option 2: Create a new service principal
+If you need to create a new service principal, run:
+
+**Linux/macOS/WSL:**
+```bash
+# Create a new service principal and get its Client ID
+CLIENT_ID=$(az ad sp create-for-rbac --name "my-hackathon-sp" --query "appId" -o tsv)
+echo "Created service principal with Client ID: $CLIENT_ID"
+
+# Now get the Object ID using our script
+./get-sp-object-id.sh $CLIENT_ID
+```
+
+**Windows PowerShell:**
+```powershell
+# Create a new service principal and get its Client ID
+$CLIENT_ID = az ad sp create-for-rbac --name "my-hackathon-sp" --query "appId" -o tsv
+Write-Host "Created service principal with Client ID: $CLIENT_ID"
+
+# Now get the Object ID using our script
+.\get-sp-object-id.ps1 $CLIENT_ID
+```
+
+### Option 3: Skip service principal setup
+You can proceed without a service principal by leaving the `servicePrincipalObjectId` parameter empty during deployment.
+
+If you run into permission issues with the script, please run:
+- **Linux/macOS/WSL:** `chmod +x get-sp-object-id.sh` first
+- **Windows PowerShell:** Ensure execution policy allows scripts with `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
+
+Save the Object ID value returned - you'll use it in the next step.
 
 Now, time to deploy our resources to Azure!
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmartaldsantos%2Fagentic-ai-hack%2Fmain%2Fchallenge-0%2Fiac%2Fazuredeploy.json)
 
-> **Note:** You can leave the **servicePrincipalObjectId** parameter empty during deployment. Only fill it if you plan to use Azure Functions in Challenge 5 and your coach provides you with the Object ID.
+**Deployment Parameters:**
+- **servicePrincipalObjectId**: If you completed the service principal setup above, paste the Object ID here. Otherwise, leave this field empty.
+- **Other parameters**: You can use the default values or customize them as needed.
+
+> **Note:** The **servicePrincipalObjectId** parameter is optional and only needed if you plan to use Azure Functions in Challenge 5 with service principal authentication. If you didn't complete the service principal setup above, simply leave this parameter empty during deployment.
 
 Resource deployment can take up to 5 minutes due to one of the resources. Don't worry, after 2/3 minutes you'll be able to find most of the resources in your resource group.
 
