@@ -140,7 +140,7 @@ You should see a screen similar to:
 ![alt text](./images/image-4.png) 
 
 
-You can now see the backbone of memory on Azure AI Agents memory and how the hierarchy is structured within it.
+You can now see the backbone of memory on Azure AI Agents and how the hierarchy is structured within it.
 
 If you are curious about Observability in Foundry on the [official documentation](https://learn.microsoft.com/en-us/azure/ai-foundry/how-to/develop/trace-agents-sdk#tracing-in-the-azure-ai-foundry-agents-playground) you have all the information on how to proceed your Observability journey and further steps to configure these tools using only the Foundry SDK!
 
