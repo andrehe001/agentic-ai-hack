@@ -82,11 +82,15 @@ The simulator creates query-response pairs from text sources, realistic conversa
 
 This supports both non-adversarial scenarios (conversational testing, training data) and adversarial simulations (jailbreak attacks, safety evaluation), enabling comprehensive insurance domain test scenarios and automated data generation pipelines.All you need to do is connected it to your datasource and let the Generator do it's magic! 
 
-Don't worry, for this challenge, step 1 is guaranteed. You can find the query-response pairs as the `eval-queries.json` file. Have a look at it, and jump over to Part 2.
+Don't worry, step 1 has already been completed for this challenge. You can find the query-response pairs as the `eval-queries.json` file. Have a look at it, and jump over to Part 2.
 
 ### Part 2. **Running the Agent evaluation locally**
-Please jump over to the notebook `agent-evaluator.py`. Have a look at the code in it, run it, and then jump over to the output file `eval-output-simple.json` to have a look at all the logs and evaluations of each one of the queries that were run.
+Now it's time to go back to our terminal, where we will run our `agent-evaluator.py` file. Copy and Paste the following code onto the terminal:
 
+```bash
+cd challenge-3 && python agent-evaluator.py
+```
+Have a look at the code in it, run it, and then jump over to the output file `eval-output-simple.json` to have a look at all the logs and evaluations of each one of the queries that were run. You can also see as an output on your terminal a table that summarizes the evaluation on the 5 queries we evaluated!
 
 ## Part 3. Oh-oh... something doesn't seem right? Let's trace it!
 

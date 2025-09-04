@@ -112,16 +112,15 @@ When you cannot find specific information in the policy documents, clearly state
 
 ![alt text](images/step73.png)
 
-11. Now, when prompted, click on `Indexes that are not part of this project`. 
-12. On the `Azure AI Search resource connection` section, click on the drop down option. If you have no pre-selected resource, click on `Connect other Azure AI search resource`. You should have only one option, the service we previously connected. Click on `Add Connection`. 
-13. To finish the connection to your Azure AI Search, please fill the fields in such a way to return
+11. On the `Azure AI Search resource connection` section, click on the drop down option. If you have no pre-selected resource, click on `Connect other Azure AI search resource`. You should have only one option, the service we previously connected. Click on `Add Connection`. 
+12. To finish the connection to your Azure AI Search, please fill the fields in such a way to return
 the following options:
 
 ![alt text](images/step13.png)
 
 
-14. Perfect! Now on the top right-hand side of your screen click on `Try on Playground`.
-15. Time to prompt! Let's explore our vector knowledge base before giving any Action step to our Agent. So far, we have done the equivalent of a normal RAG scenario. 
+13. Perfect! Now on the top right-hand side of your screen click on `Try on Playground`.
+14. Time to prompt! Let's explore our vector knowledge base before giving any Action step to our Agent. So far, we have done the equivalent of a normal RAG scenario. 
 
 ```
 What are the most comprehensive insurance policies for cars?
