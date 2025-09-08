@@ -108,4 +108,4 @@ Congratulations! You've successfully built a multi-agent orchestration system th
 - Created a Master Orchestrator that synthesizes outputs from multiple agents
 - Built hybrid solutions combining Azure AI Agent Service with custom Semantic Kernel plugins
 - Developed a production-ready framework for intelligent insurance claim processing
-- Prepared the system for enterprise deployment to Azure Functions with scalability and monitoring capabilities
+- Prepared the system for enterprise deployment to an Azure Container App with scalability and monitoring capabilities
