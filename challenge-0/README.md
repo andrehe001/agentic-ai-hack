@@ -42,7 +42,7 @@ Now, time to deploy our resources to Azure!
 
 **Deployment Parameters:**
 - servicePrincipalObjectId: If you completed the service principal setup above, paste the Object ID here. Otherwise, leave this field empty.
-- resource group*Introduce the unique name for your resource group (defined above).
+- resource group: Introduce the unique name for your resource group (defined above).
 
 **NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
