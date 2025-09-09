@@ -58,45 +58,72 @@ In Semantic Kernel's Concurrent Orchestration, [`tasks`](https://learn.microsoft
 
 ## Part 2 - Now onto automation!
 
-Great! Now that you've built your orchestrator in the Jupyter notebook, it's time to deploy it as a production-ready Container App. 
+### Step-by-step deployment instructions:
+
+#### Part 1 - Run your orchestrator locally
+
+1. **Setup Authentication**: First, create a service principal for authentication.
+Replace YOUR_SUBSCRIPTION_ID, YOUR_RESOURCE_GROUP:
+
+```bash
+az login
+az ad sp create-for-rbac --name "insurance-orchestrator-sp" --role "Cognitive Services User" --scopes "/subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP"
+```
+Save the output values (appId, password, tenant) - you'll need them for the next steps.
+
+2. **Run the helper script** for automated setup and testing:
+```bash
+cd /workspaces/agentic-ai-hack/challenge-5/deployment
+./local-test.sh
+```
+3. **Run Container Locally with Authentication**: Test the container locally with service principal credentials:
+```bash
+docker run -p 8080:8000 \
+  -e AZURE_CLIENT_ID="YOUR_SERVICE_PRINCIPAL_APP_ID" \
+  -e AZURE_CLIENT_SECRET="YOUR_SERVICE_PRINCIPAL_PASSWORD" \
+  -e AZURE_TENANT_ID="YOUR_TENANT_ID" \
+  -e AI_FOUNDRY_PROJECT_ENDPOINT="YOUR_AI_FOUNDRY_ENDPOINT" \
+  -e MODEL_DEPLOYMENT_NAME="YOUR_MODEL_NAME" \
+  -e COSMOS_ENDPOINT="YOUR_COSMOS_ENDPOINT" \
+  -e COSMOS_KEY="YOUR_COSMOS_KEY" \
+  -e AZURE_AI_CONNECTION_ID="YOUR_AI_CONNECTION_ID" \
+  -e AZURE_AI_SEARCH_INDEX_NAME="YOUR_SEARCH_INDEX" \
+  -e SEARCH_SERVICE_NAME="YOUR_SEARCH_SERVICE" \
+  -e SEARCH_SERVICE_ENDPOINT="YOUR_SEARCH_ENDPOINT" \
+  -e SEARCH_ADMIN_KEY="YOUR_SEARCH_KEY" \
+  -e CLAIM_ID="CL001" \
+  -e POLICY_NUMBER="LIAB-AUTO-001" \
+  insurance-orchestrator
+```
+Replace all the `YOUR_*` placeholders with your actual values from the `.env` file and service principal creation.
+
+#### Part 2 - Deploy to Azure
 
 [Container apps](https://learn.microsoft.com/en-us/azure/container-apps/overview) are an effective way to deploy and manage multi-agent orchestration systems by providing isolated, scalable environments for each agent or service. They enable agents to run independently while communicating through APIs or messaging systems, allowing for flexible coordination, fault isolation, and dynamic scaling. By using container orchestration platforms like Kubernetes or Azure Container Apps, developers can automate deployment, load balancing, and lifecycle management of complex multi-agent systems in a cloud-native, resilient architecture.
 
 In this scenario, we are deploying our multi-agent orchestrator within a **single Azure Container Apps (CA) environment**. We utilize the Azure Container Registry (ACR) created in challenge 0 to store and manage our container images, ensuring secure and efficient delivery to the CA environment. During deployment, we will pass the necessary configuration and connection details as environment variables using a `.env` file—this includes Foundry, Cosmos and Storage credentials —allowing our orchestrator and agents to access resources dynamically without hardcoding sensitive information. This setup streamlines updates, improves security, and enables seamless integration with Azure services, making our system robust and production-ready.
 
-Jump over to the deployment folder and you will find a:
-- `Dockerfile` - A containerization blueprint that creates a Python 3.11-slim environment, installs PowerShell for Azure CLI operations, sets up all required dependencies from `requirements.txt`
-- `orchestration.py` file - The production-ready version of your Jupyter notebook orchestrator, refactored as a standalone Python application that initializes your three specialized agents and coordinates their concurrent execution.
-- `requirements.txt` - Contains all necessary Python packages to be installed
-- `container-apps copy.sh` - A template version of the deployment script that you'll customize with your specific environment variables and configuration settings
-
-1. Go to the `container-apps copy.sh` file, and on the `--env-vars` section, you can find the variables that will be pushed into your ACA. Please fill them with the values that you have automatically retrieved on challenge 0, that you can find on the `.env` file in root.
-
-2. Fill the 4 components that have the #FILL command, RESOURCE_GROUP (previously set), ACR_NAME (previously deployed), CONTAINER_APP_NAME (a new name for your container app) and the CONTAINERAPPS_ENV (a new name for the enviornment we are creating).
-
-3. Now its time to run your docker locally
-
-```bash
-cd /workspaces/agentic-ai-hack/challenge-5/deployment && docker build -t insurance-orchestrator .
-```
-4. Now it's time to push it to the Cloud! Rename your file from `container-apps copy.sh` to `container-apps.sh` and run:
-
+4. **Deploy to Azure**: Now it's time to push it to the Cloud! Rename your file from `container-apps copy.sh` to `container-apps.sh`, fill the cells that have the #FILL comment and run:
 ```bash
 ./container-apps.sh
 ```
 
 This script automates the complete setup of your multi-agent insurance orchestrator in production. It creates the necessary Azure resources (resource group and container environment), builds your Docker image from the local Dockerfile and pushes it to Azure Container Registry, then deploys it as a scalable container app with all required environment variables for AI Foundry, Cosmos DB, and Azure AI Search connections. The script also configures auto-scaling (0-1 replicas), sets up managed identity for secure Azure service access, and assigns the necessary permissions for your orchestrator to coordinate the three specialized insurance agents in a production-ready environment.
 
+##### Troubleshooting Tips:
 
-###  Challenge Yourself!
+- **Authentication Issues**: If you get authentication errors, ensure your service principal has the correct permissions and the environment variables are set correctly.
+- **Port Mapping**: Note that the container exposes port 8000, so use `-p 8080:8000` for local testing.
+- **Environment Variables**: Double-check that all environment variables from your `.env` file are correctly set in both local testing and the deployment script.
+- **Resource Names**: Ensure all Azure resource names are unique and follow Azure naming conventions.
+- **Quick Start**: Use the `local-test.sh` helper script for automated setup if you're new to Azure service principals.
 
-Pick 1-2 expansion ideas and implement them in your system. Consider:
-- Which expansion would have the biggest impact on your insurance use case?
-- How can you measure the success of your new capabilities?
-- What additional data sources or APIs would make your agents even smarter?
-- How might you handle errors or edge cases in your expanded system?
-
-**Pro Tip:** Start with one simple expansion before moving to more complex orchestration patterns!
+### 📁 File Summary:
+- `local-test.sh` - Helper script for service principal creation and local testing
+- `container-apps.sh` - Production deployment script (rename from container-apps copy.sh)
+- `Dockerfile` - Container configuration 
+- `orchestration.py` - Production orchestrator code
+- `requirements.txt` - Python dependencies
 
 
 ## 🎯 Conclusion

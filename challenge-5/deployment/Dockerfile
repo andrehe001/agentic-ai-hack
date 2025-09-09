@@ -16,13 +16,8 @@ RUN apt-get update && apt-get install -y \
 # Install Azure CLI
 RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
-# Install PowerShell directly from GitHub releases (more reliable)
-RUN wget -q https://github.com/PowerShell/PowerShell/releases/download/v7.4.0/powershell_7.4.0-1.deb_amd64.deb \
-    && dpkg -i powershell_7.4.0-1.deb_amd64.deb || true \
-    && apt-get update \
-    && apt-get install -f -y \
-    && rm powershell_7.4.0-1.deb_amd64.deb \
-    && rm -rf /var/lib/apt/lists/*
+# Skip PowerShell installation for now - focus on the main authentication issue
+# Will use environment credentials instead
 
 # Install additional tools
 RUN apt-get update && apt-get install -y \
