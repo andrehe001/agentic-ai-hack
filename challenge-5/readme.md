@@ -62,21 +62,15 @@ In Semantic Kernel's Concurrent Orchestration, [`tasks`](https://learn.microsoft
 
 #### Part 1 - Run your orchestrator locally
 
-1. **Setup Authentication**: First, create a service principal for authentication.
-Replace YOUR_SUBSCRIPTION_ID, YOUR_RESOURCE_GROUP:
-
-```bash
-az login
-az ad sp create-for-rbac --name "insurance-orchestrator-sp" --role "Cognitive Services User" --scopes "/subscriptions/YOUR_SUBSCRIPTION_ID/resourceGroups/YOUR_RESOURCE_GROUP"
-```
-Save the output values (appId, password, tenant) - you'll need them for the next steps.
-
-2. **Run the helper script** for automated setup and testing:
+1. **Run the helper script** for automated setup and testing:
 ```bash
 cd /workspaces/agentic-ai-hack/challenge-5/deployment
 ./local-test.sh
 ```
-3. **Run Container Locally with Authentication**: Test the container locally with service principal credentials:
+
+Save the output values (appId, password, tenant) - you'll need them for the next steps.
+
+2. **Run Container Locally with Authentication**: Test the container locally with service principal credentials:
 ```bash
 docker run -p 8080:8000 \
   -e AZURE_CLIENT_ID="YOUR_SERVICE_PRINCIPAL_APP_ID" \
@@ -103,7 +97,7 @@ Replace all the `YOUR_*` placeholders with your actual values from the `.env` fi
 
 In this scenario, we are deploying our multi-agent orchestrator within a **single Azure Container Apps (CA) environment**. We utilize the Azure Container Registry (ACR) created in challenge 0 to store and manage our container images, ensuring secure and efficient delivery to the CA environment. During deployment, we will pass the necessary configuration and connection details as environment variables using a `.env` file—this includes Foundry, Cosmos and Storage credentials —allowing our orchestrator and agents to access resources dynamically without hardcoding sensitive information. This setup streamlines updates, improves security, and enables seamless integration with Azure services, making our system robust and production-ready.
 
-4. **Deploy to Azure**: Now it's time to push it to the Cloud! Rename your file from `container-apps copy.sh` to `container-apps.sh`, fill the cells that have the #FILL comment and run:
+3. **Deploy to Azure**: Now it's time to push it to the Cloud! Rename your file from `container-apps copy.sh` to `container-apps.sh`, fill the cells that have the #FILL comment and run:
 ```bash
 ./container-apps.sh
 ```

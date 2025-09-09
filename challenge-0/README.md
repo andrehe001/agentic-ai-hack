@@ -34,40 +34,15 @@ Before anything else, let's log in into the CLI with our account. Please paste t
 az login --use-device-code
 ```
 
-
-## 1.3.1 Service Principal Setup 
-
-To enable automated access to AI services, you need to create an Azure AD app registration and service principal.
-
-Run the following command to create both and extract the client ID and object ID:
-
-```bash
-cd challenge-0 && ./create-app-registration.sh YOUR_APP_NAME
-```
-
-Replace YOUR_APP_NAME with a unique name for your app registration (e.g., hackathon-yourinitials).
-The script will output the Client ID and Object ID.
-
-## 1.3.2 Resources Deployment
+## 1.3.1 Resources Deployment
 
 Now, time to deploy our resources to Azure!
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmartaldsantos%2Fagentic-ai-hack%2Fmain%2Fchallenge-0%2Fiac%2Fazuredeploy.json)
 
 **Deployment Parameters:**
-- **servicePrincipalObjectId**: If you completed the service principal setup above, paste the Object ID here. Otherwise, leave this field empty.
-- **resource group** Introduce an unique name for your resource group (e.g., rg-yourinitials).
-- **Other parameters**: You can use the default values or customize them as needed.
-
-> **Note:** The **servicePrincipalObjectId** parameter is optional and only needed if you plan to use Azure Functions in Challenge 5 with service principal authentication. If you didn't complete the service principal setup above, simply leave this parameter empty during deployment.
-
-**Option 2 for Deployment: Manually upload the Template**
-1. **Download the template**: Right-click [this link](https://raw.githubusercontent.com/martaldsantos/agentic-ai-hack/main/challenge-0/iac/azuredeploy.json) and save the JSON file
-2. **Open Azure Portal**: Go to [portal.azure.com](https://portal.azure.com)
-3. **Create Custom Deployment**: Search for "Deploy a custom template" or go to [Custom deployment](https://portal.azure.com/#create/Microsoft.Template)
-4. **Upload template**: Click "Upload a file" and select the downloaded JSON file
-5. **Configure**: Select subscription, resource group, and region
-6. **Deploy**: Click "Review + create" then "Create"
+- servicePrincipalObjectId: If you completed the service principal setup above, paste the Object ID here. Otherwise, leave this field empty.
+- resource group*Introduce the unique name for your resource group (defined above).
 
 **NOTE:** Some parts of your deployment may fail if the resource provider `Microsoft.AlertsManagement` is not registered in your. Follow the [documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/resource-providers-and-types#register-resource-provider-1) to register it and the re-run the deployment.
 
