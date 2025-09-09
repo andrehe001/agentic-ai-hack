@@ -62,7 +62,7 @@ After deploying the resources, you will need to configure the environment variab
 ./get-keys.sh --resource-group YOUR_RESOURCE_GROUP_NAME
 ```
 
-Replace `YOUR_RESOURCE_GROUP_NAME` with the actual name of the resource group created on step 1.3.2.
+Replace `YOUR_RESOURCE_GROUP_NAME` with the actual name of the resource group created on step 1.3.
 
 This script will connect to Azure and fetch the necessary keys and populate the `.env` file with the required values in the root directory of the repository.
 
