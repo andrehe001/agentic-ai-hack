@@ -7,8 +7,7 @@ import os
 os.environ["AZURE_TRACING_GEN_AI_CONTENT_RECORDING_ENABLED"] = "true" # False by default
 import time
 import json
-import argparse
-from typing import Any, Dict, Optional
+from typing import Dict, Any, Optional
 
 from pathlib import Path
 from dotenv import load_dotenv
@@ -24,10 +23,7 @@ from azure.ai.evaluation import (
 
 from azure.identity import DefaultAzureCredential
 
-try:
-    from azure.monitor.opentelemetry import configure_azure_monitor  # optional
-except Exception:  # ModuleNotFoundError or others
-    configure_azure_monitor = None  # type: ignore[assignment]
+from azure.monitor.opentelemetry import configure_azure_monitor
 
 from opentelemetry import trace
 tracer = trace.get_tracer(__name__)
@@ -94,7 +90,7 @@ def run_simple_evaluation():
         available_agents = [a.name for a in ai_project.agents.list_agents()]
         raise ValueError(f"Agent '{agent_name}' not found. Available agents: {available_agents}")
 
-    assert agent_id is not None, "agent_id should be set when agent_found is True"
+    assert agent_id is not None
     agent = ai_project.agents.get_agent(agent_id)
 
     # Setup evaluation config
@@ -111,7 +107,6 @@ def run_simple_evaluation():
         "resource_group_name": os.getenv("AZURE_RESOURCE_GROUP", ""),
         "project_name": os.getenv("AI_FOUNDRY_PROJECT_NAME", ""),
     }
-    # Basic validation to prevent type errors in evaluators
     if not all(azure_ai_project.values()):
         missing = [k for k, v in azure_ai_project.items() if not v]
         raise ValueError(
@@ -157,7 +152,6 @@ def run_simple_evaluation():
                 "ground-truth": row.get("ground-truth", '')
             }
 
-            # AIAgentConverter signature accepts Azure Agent thread identifiers; ignore static type checker here
             evaluation_data = thread_data_converter.prepare_evaluation_data(thread_ids=[thread.id])  # type: ignore[arg-type]
             eval_item = evaluation_data[0]
             eval_item["metrics"] = operational_metrics
@@ -225,19 +219,14 @@ def run_simple_evaluation():
     results = evaluate(
         evaluation_name="policy-checker-comprehensive-evaluation",
         data=eval_input_path,
-        evaluators=evaluators_config,
+        evaluators=evaluators_config,  # type: ignore[arg-type]
         output_path=eval_output_path,
         # NO azure_ai_project parameter to avoid storage permission issues
     )
     
     print("✅ Comprehensive evaluation completed!")
     
-    _print_metrics_header()
-    _print_metrics_from_output(eval_output_path)
-    _print_paths(eval_input_path, eval_output_path)
-
-
-def _print_metrics_header():
+    # Display results with target metrics
     print("\n" + "=" * 70)
     print("EVALUATION RESULTS".center(70))
     print("=" * 70)
@@ -247,92 +236,30 @@ def _print_metrics_header():
     print("  Tool Call Accuracy: 90-95% (correct tool selection and usage)")
     print("  Response Completeness: 85-95% (comprehensive information coverage)")
     print("-" * 70)
-
-
-def _format_metric(key: str, value):
-    # Percent-style for binary aggregates
-    if isinstance(value, (int, float)):
-        if key.endswith("binary_aggregate"):
-            return f"{value * 100:.1f}%"
-        # Keep rubric-style scores (e.g., 1-5) as-is with two decimals
-        return f"{value:.2f}"
-    return str(value)
-
-
-def _print_metrics_from_output(eval_output_path: Path | str):
-    try:
-        with open(eval_output_path, "r", encoding="utf-8") as f:
-            data = json.load(f)
-    except Exception as e:
-        print(f"⚠️ Could not read evaluation output file: {e}")
-        return
-
-    metrics = data.get("metrics") if isinstance(data, dict) else None
-    if not metrics:
-        print("⚠️ No aggregated metrics found in output file.")
-        return
-
-    # Friendly ordering for common metrics if present
-    preferred_order = [
-        "intent_resolution.intent_resolution",
-        "intent_resolution.binary_aggregate",
-        "task_adherence.task_adherence",
-        "task_adherence.binary_aggregate",
-        "tool_call_accuracy.binary_aggregate",
-        "operational_metrics.server-run-duration-in-seconds",
-        "operational_metrics.client-run-duration-in-seconds",
-        "operational_metrics.prompt-tokens",
-        "operational_metrics.completion-tokens",
-    ]
-
-    displayed = set()
-    labels = {
-        "intent_resolution.intent_resolution": "Intent Resolution (avg score)",
-        "intent_resolution.binary_aggregate": "Intent Resolution (pass rate)",
-        "task_adherence.task_adherence": "Task Adherence (avg score)",
-        "task_adherence.binary_aggregate": "Task Adherence (pass rate)",
-        "tool_call_accuracy.binary_aggregate": "Tool Call Accuracy (pass rate)",
-        "operational_metrics.server-run-duration-in-seconds": "Server run duration (s, avg)",
-        "operational_metrics.client-run-duration-in-seconds": "Client run duration (s, avg)",
-        "operational_metrics.prompt-tokens": "Prompt tokens (avg)",
-        "operational_metrics.completion-tokens": "Completion tokens (avg)",
-    }
-
-    # Print preferred metrics first
-    for k in preferred_order:
-        if k in metrics:
-            print(f"{labels.get(k, k):<45} | {_format_metric(k, metrics[k])}")
-            displayed.add(k)
-
-    # Print any remaining metrics
-    for k, v in metrics.items():
-        if k in displayed:
-            continue
-        print(f"{k:<45} | {_format_metric(k, v)}")
-
-
-def _print_paths(eval_input_path: Path | str, eval_output_path: Path | str):
+    
+    if hasattr(results, 'metrics') and results.metrics:  # type: ignore[attr-defined]
+        for key, value in results.metrics.items():  # type: ignore[attr-defined]
+            if isinstance(value, float):
+                # Convert to percentage if it looks like a proportion (0-1 range)
+                if 0 <= value <= 1 and key in ['intent_resolution', 'task_adherence', 'tool_call_accuracy']:
+                    percentage = value * 100
+                    print(f"{key:<35} | {percentage:.1f}%")
+                else:
+                    print(f"{key:<35} | {value:.2f}")
+            else:
+                print(f"{key:<35} | {value}")
+    else:
+        print("No metrics found in results")
+        print(f"Results type: {type(results)}")
+    
     print("=" * 70)
     print(f"Evaluation input: {eval_input_path}")
     print(f"Evaluation output: {eval_output_path}")
     print("=" * 70)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run or display AI agent evaluation metrics.")
-    parser.add_argument("--print-only", action="store_true", help="Only print metrics from the latest output file without rerunning evaluation")
-    args = parser.parse_args()
-
-    current_dir = Path(__file__).parent
-    eval_input_path = current_dir / "eval-input-simple.jsonl"
-    eval_output_path = current_dir / "eval-output-simple.json"
-
     try:
-        if args.print_only:
-            _print_metrics_header()
-            _print_metrics_from_output(eval_output_path)
-            _print_paths(eval_input_path, eval_output_path)
-        else:
-            run_simple_evaluation()
+        run_simple_evaluation()
     except Exception as e:
         print(f"Error during evaluation: {e}")
         import traceback

@@ -1,33 +1,53 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "type": "func",
-      "label": "func: host start",
-      "command": "host start",
-      "problemMatcher": "$func-python-watch",
-      "isBackground": true,
-      "dependsOn": "pip install (functions)",
-      "options": {
-        "cwd": "${workspaceFolder}/challenge-5/azure-function-orchestrator"
-      }
-    },
-    {
-      "label": "pip install (functions)",
-      "type": "shell",
-      "osx": {
-        "command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
-      },
-      "windows": {
-        "command": "${config:azureFunctions.pythonVenv}/Scripts/python -m pip install -r requirements.txt"
-      },
-      "linux": {
-        "command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
-      },
-      "problemMatcher": [],
-      "options": {
-        "cwd": "${workspaceFolder}/challenge-5/azure-function-orchestrator"
-      }
-    }
-  ]
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "func",
+			"label": "func: host start",
+			"command": "host start",
+			"problemMatcher": "$func-python-watch",
+			"isBackground": true,
+			"dependsOn": "pip install (functions)",
+			"options": {
+				"cwd": "${workspaceFolder}/challenge-5/azure-function-orchestrator"
+			}
+		},
+		{
+			"label": "pip install (functions)",
+			"type": "shell",
+			"osx": {
+				"command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+			},
+			"windows": {
+				"command": "${config:azureFunctions.pythonVenv}/Scripts/python -m pip install -r requirements.txt"
+			},
+			"linux": {
+				"command": "${config:azureFunctions.pythonVenv}/bin/python -m pip install -r requirements.txt"
+			},
+			"problemMatcher": [],
+			"options": {
+				"cwd": "${workspaceFolder}/challenge-5/azure-function-orchestrator"
+			}
+		},
+		{
+			"label": "Start Azure Functions host (orch)",
+			"type": "shell",
+			"command": "func host start",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start Orchestrator Host",
+			"type": "shell",
+			"command": "func host start",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [
+				"$tsc"
+			],
+			"group": "build"
+		}
+	]
 }

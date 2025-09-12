@@ -43,11 +43,6 @@ echo "Getting the output parameters from the last deployment '$deploymentName' i
 echo "Extracting the resource names from the deployment outputs..."
 storageAccountName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.storageAccountName.value" -o tsv 2>/dev/null || echo "")
 logAnalyticsWorkspaceName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.logAnalyticsWorkspaceName.value" -o tsv 2>/dev/null || echo "")
-if [ -z "$logAnalyticsWorkspaceName" ]; then
-    echo "No Log Analytics workspace found. Please enter the workspace name manually:"
-    read logAnalyticsWorkspaceName
-fi
-logAnalyticsWorkspaceId=$(az monitor log-analytics workspace show --resource-group $resourceGroupName --workspace-name $logAnalyticsWorkspaceName --query customerId -o tsv 2>/dev/null || echo "")
 searchServiceName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.searchServiceName.value" -o tsv 2>/dev/null || echo "")
 aiFoundryHubName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryHubName.value" -o tsv 2>/dev/null || echo "")
 aiFoundryProjectName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.aiFoundryProjectName.value" -o tsv 2>/dev/null || echo "")
@@ -167,6 +162,29 @@ else
     appInsightsInstrumentationKey=""
 fi
 
+# <<<<<<< HEAD
+# =======
+# Get Document Intelligence service name and keys
+echo "Getting Document Intelligence service information..."
+docIntelServiceName=$(az deployment group show --resource-group $resourceGroupName --name $deploymentName --query "properties.outputs.documentIntelligenceName.value" -o tsv 2>/dev/null || echo "")
+if [ -z "$docIntelServiceName" ]; then
+    docIntelServiceName=$(az cognitiveservices account list --resource-group $resourceGroupName --query "[?kind=='FormRecognizer'].name | [0]" -o tsv 2>/dev/null || echo "")
+fi
+
+if [ -n "$docIntelServiceName" ]; then
+    docIntelEndpoint=$(az cognitiveservices account show --name $docIntelServiceName --resource-group $resourceGroupName --query properties.endpoint -o tsv 2>/dev/null || echo "")
+    docIntelKey=$(az cognitiveservices account keys list --name $docIntelServiceName --resource-group $resourceGroupName --query key1 -o tsv 2>/dev/null || echo "")
+else
+    echo "Warning: No Document Intelligence (FormRecognizer) service found in resource group. You may need to deploy one."
+    docIntelEndpoint=""
+    docIntelKey=""
+fi
+
+
+
+# Add this section after getting the search service information (around line 100)
+
+# >>>>>>> ms
 # Get Azure AI Search connection ID
 # Note: The 'az cognitiveservices account connection' command is not available in all Azure CLI versions
 # We'll construct the connection ID manually later in the script
@@ -234,6 +252,13 @@ echo "AZURE_STORAGE_ACCOUNT_NAME=\"$storageAccountName\"" >> ../.env
 echo "AZURE_STORAGE_ACCOUNT_KEY=\"$storageAccountKey\"" >> ../.env
 echo "AZURE_STORAGE_CONNECTION_STRING=\"$storageAccountConnectionString\"" >> ../.env
 
+# <<<<<<< HEAD
+# =======
+# Azure Document Intelligence
+echo "AZURE_DOC_INTEL_ENDPOINT=\"$docIntelEndpoint\"" >> ../.env
+echo "AZURE_DOC_INTEL_KEY=\"$docIntelKey\"" >> ../.env
+
+# >>>>>>> ms
 # Other Azure services
 echo "LOG_ANALYTICS_WORKSPACE_NAME=\"$logAnalyticsWorkspaceName\"" >> ../.env
 echo "SEARCH_SERVICE_NAME=\"$searchServiceName\"" >> ../.env
@@ -243,8 +268,7 @@ echo "AI_FOUNDRY_HUB_NAME=\"$aiFoundryHubName\"" >> ../.env
 echo "AI_FOUNDRY_PROJECT_NAME=\"$aiFoundryProjectName\"" >> ../.env
 echo "AI_FOUNDRY_ENDPOINT=\"$aiFoundryEndpoint\"" >> ../.env
 echo "AI_FOUNDRY_KEY=\"$aiFoundryKey\"" >> ../.env
-acr_username=$(az acr credential show --name $containerRegistryName --query username -o tsv)
-acr_password=$(az acr credential show --name $containerRegistryName --query passwords[0].value -o tsv)
+
 # Construct AI Foundry Hub Endpoint if missing
 if [ -z "$aiFoundryHubEndpoint" ] && [ -n "$aiFoundryHubName" ]; then
     echo "Constructing AI Foundry Hub Endpoint..."
@@ -291,19 +315,23 @@ echo "Log Analytics Workspace: $logAnalyticsWorkspaceName"
 echo "Search Service: $searchServiceName"
 echo "API Management: $apiManagementName"
 echo "AI Foundry Hub: $aiFoundryHubName"
+# <<<<<<< HEAD
+# =======
 echo "AI Foundry Project: $aiFoundryProjectName"
 echo "Key Vault: $keyVaultName"
 echo "Container Registry: $containerRegistryName"
 echo "Application Insights: $applicationInsightsName"
-echo "ACR_NAME=\"$containerRegistryName\"" >> ../.env
-echo "ACR_USERNAME=\"$acr_username\"" >> ../.env
-echo "ACR_PASSWORD=\"$acr_password\"" >> ../.env
-
+if [ -n "$docIntelServiceName" ]; then
+    echo "Document Intelligence: $docIntelServiceName"
+else
+    echo "Document Intelligence: NOT FOUND - You may need to deploy this service"
+fi
 if [ -n "$cosmosDbAccountName" ]; then
     echo "Cosmos DB: $cosmosDbAccountName"
 else
     echo "Cosmos DB: NOT FOUND - You may need to deploy this service"
 fi
+# >>>>>>> ms
 echo "Environment file created: ../.env"
 
 # Show what needs to be deployed
@@ -311,6 +339,11 @@ missing_services=""
 if [ -z "$storageAccountName" ]; then missing_services="$missing_services Storage"; fi
 if [ -z "$searchServiceName" ]; then missing_services="$missing_services Search"; fi
 if [ -z "$aiFoundryHubName" ]; then missing_services="$missing_services AI-Foundry"; fi
+# <<<<<<< HEAD
+# =======
+if [ -z "$docIntelServiceName" ]; then missing_services="$missing_services Document-Intelligence"; fi
+if [ -z "$cosmosDbAccountName" ]; then missing_services="$missing_services Cosmos-DB"; fi
+# >>>>>>> ms
 
 if [ -n "$missing_services" ]; then
     echo ""

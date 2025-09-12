@@ -18,5 +18,21 @@
   {
     "query": "What specific exclusions and limitations are listed in our liability only auto policies?",
     "ground-truth": "Liability only policies exclude comprehensive and collision coverage, meaning damage to the insured vehicle from accidents, theft, vandalism, or natural disasters is not covered."
+  },
+  {
+    "query": "What additional coverage options are available for high value vehicles?",
+    "ground-truth": "High value vehicles may qualify for additional coverage options such as agreed value coverage, which ensures the vehicle is insured for its full appraised value."
+  },
+  {
+    "query": "What are the specific terms and conditions for coverage of custom modifications in our motorcycle insurance policy?",
+    "ground-truth": "Motorcycle insurance policies may have specific terms regarding custom modifications, often requiring documentation and possibly additional premiums for coverage."
+  },
+  {
+    "query": "What are the specific exclusions related to natural disasters in our comprehensive auto policy?",
+    "ground-truth": "Comprehensive auto policies typically cover natural disasters, but may exclude certain events like flooding or earthquakes unless specifically included."
+  },
+  {
+    "query": "What are the specific requirements for filing a claim under our commercial auto insurance policy?",
+    "ground-truth": "Commercial auto insurance policies generally require prompt notification of the claim, detailed documentation of the incident, and cooperation with the insurer's investigation."  
   }
 ]
